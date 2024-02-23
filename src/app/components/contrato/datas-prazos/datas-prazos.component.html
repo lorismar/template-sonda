@@ -1,0 +1,380 @@
+<div class="container">
+  <app-navegacao
+    [paginaAnterior]="'Home'"
+    [paginaAtual]="'Contrato'"
+    [proximaPagina]="'Cadastro'"
+  ></app-navegacao>
+
+  <app-stepper></app-stepper>
+
+  <div [formGroup]="form">
+    <div class="card m-3 shadow p-2">
+      <div
+        class="card-header bg-transparent text-secondary bg-white border-bottom-0"
+      >
+        <h6 class="card-title m-0 fw-bold">Cadastro de Datas e Prazos</h6>
+      </div>
+      <div class="card-body show">
+        <div class="content">
+          <!--row 1-->
+          <div class="row">
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Data Apresentação Proposta</label>
+              <div class="input-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  max="9999-12-31"
+                  name="dataApresentacaoProposta"
+                  formControlName="dataApresentacaoProposta"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Data Assinatura Contrato</label>
+              <div class="input-group">
+                <input
+                  type="date"
+                  max="9999-12-31"
+                  class="form-control"
+                  name="dataAssinaturaContrato"
+                  formControlName="dataAssinaturaContrato"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Prazo Reunião Alinhamento (dias)</label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  maxlength="4"
+                  class="form-control"
+                  name="prazoReuniaoAlinhamento"
+                  formControlName="prazoReuniaoAlinhamento"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Prazo de Entrega (dias)</label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="4"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  class="form-control"
+                  name="prazoEntrega"
+                  formControlName="prazoEntrega"
+                />
+              </div>
+              <span class="badge bg-secondary">
+                Data limite entrega:
+                {{ form.value.dataLimiteEntrega | date : "dd/MM/yyyy" }}
+              </span>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Prazo Recebimento Provisório</label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  maxlength="4"
+                  class="form-control"
+                  name="prazoRecebimentoProvisorio"
+                  formControlName="prazoRecebimentoProvisorio"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Prazo Recebimento Definitivo (dias) </label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  maxlength="4"
+                  class="form-control"
+                  name="prazoRecebimentoDefinitivo"
+                  formControlName="prazoRecebimentoDefinitivo"
+                />
+              </div>
+              <span class="badge bg-secondary">
+                Data Limite de Recebimento Definitivo:
+                {{ form.value.dataLimiteRecebimento | date : "dd/MM/yyyy" }}
+              </span>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Recebimento Definitivo </label>
+              <select
+                class="form-select form-control"
+                aria-label=".form-select-sm example"
+                name="recebimentoDefinitivo"
+                formControlName="recebimentoDefinitivo"
+                [value]="datasPrazos.recebimentoDefinitivo"
+              >
+                <option selected value="undefined" class="text-center" selected>
+                  --- Selecione ---
+                </option>
+                <option value="COMISSAO">Comissão</option>
+                <option value="GESTOR">Gestor</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Prazo de Pagamento</label>
+              <select
+                class="form-select form-control"
+                aria-label=".form-select-sm example"
+                name="tipoPrazoPagamento"
+                formControlName="tipoPrazoPagamento"
+                (change)="definirPrazo()"
+              >
+                <option selected [ngValue]="null" class="text-center" selected>
+                  --- Selecione ---
+                </option>
+                <option value="CINCO_DIAS_UTEIS">5 dias úteis</option>
+                <option value="NOVE_DIAS_UTEIS">9 dias úteis</option>
+                <option value="TRINTA_DIAS_CONSECUTIVOS">30 dias consecutivos</option>
+                <option value="OUTROS">Outros</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2" *ngIf="form.value.tipoPrazoPagamento === 'OUTROS'">
+              <label>Peridiocidade</label>
+              <select
+                class="form-select form-control"
+                aria-label=".form-select-sm example"
+                name="periodicidadePrazoPagamento"
+                formControlName="periodicidadePrazoPagamento"
+              >
+                <option selected [ngValue]="null" class="text-center" selected>
+                  --- Selecione ---
+                </option>
+                <option value="DIAS_UTEIS">Dias úteis</option>
+                <option value="DIAS_CONSECUTIVOS">Dias consecutivos</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2" *ngIf="form.value.tipoPrazoPagamento === 'OUTROS'">
+              <label>Prazo Pagamento</label>
+              <input
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                type="number"
+                maxlength="4"
+                class="form-control"
+                name="prazoPagamento"
+                formControlName="prazoPagamento"
+            />
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Continuado</label>
+              <div class="row">
+                <div class="ms-2">
+                  <div class="form-check form-check-inline me-4">
+                    <label class="form-check-label" for="continuado-sim"
+                      >Sim</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="continuado-sim"
+                      name="continuado"
+                      value="S"
+                      formControlName="continuado"
+                    />
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="continuado-nao"
+                      >Não</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="continuado-nao"
+                      name="continuado"
+                      value="N"
+                      formControlName="continuado"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Data Início Vigência</label>
+              <div class="input-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  max="9999-12-31"
+                  name="dataInicioVigencia"
+                  formControlName="dataInicioVigencia"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Data Fim Vigência</label>
+              <div class="input-group">
+                <input
+                  (blur)="prazoMaximoVigencia()"
+                  type="date"
+                  class="form-control"
+                  max="9999-12-31"
+                  name="dataFimVigencia"
+                  formControlName="dataFimVigencia"
+                />
+              </div>
+            </div>
+            <div *ngIf="form.value.continuado != 'N'" class="col-md-6 col-lg-3">
+              <label>Prazo Máximo de Vigência </label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  maxlength="4"
+                  class="form-control"
+                  name="prazoMaximoVigencia"
+                  formControlName="prazoMaximoVigencia"
+                />
+              </div>
+              <span class="badge bg-secondary">
+                Data limite prorrogação:
+                {{ form.value.dataLimiteProrogacao | date : "dd/MM/yyyy" }}
+              </span>
+            </div>
+            <div *ngIf="form.value.continuado != 'N'" class="col-md-6 col-lg-3">
+              <label>Tipo Prazo Máximo de Vigência</label>
+              <select
+                name="tipoPrazoMaximoVigencia"
+                formControlName="tipoPrazoMaximoVigencia"
+                class="form-select form-control"
+                aria-label=".form-select-sm example"
+              >
+                <option value="">-- Selecione --</option>
+                <option value="DIAS">Dias</option>
+                <option value="MESES">Meses</option>
+                <option value="ANOS">Anos</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Prazo de Vigência</label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  maxlength="4"
+                  class="form-control"
+                  name="prazoVigencia"
+                  formControlName="prazoVigencia"
+                />
+              </div>
+              <!-- <span class="badge bg-secondary">
+                Fim vigência: {{form.value.dataFimVigencia | date : "dd/MM/yyyy"}}
+              </span> -->
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Tipo Prazo de Vigência</label>
+              <select
+                name="garantia"
+                formControlName="tipoPrazoVigencia"
+                class="form-select form-control"
+                aria-label="form-select-sm example"
+              >
+                <option value="">-- Selecione --</option>
+                <option value="DIAS">Dias</option>
+                <option value="MESES">Meses</option>
+                <option value="ANOS">Anos</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Garantia Contratual</label>
+              <div class="row">
+                <div class="ms-2">
+                  <div class="form-check form-check-inline me-4">
+                    <label class="form-check-label" for="garantiaContratual-sim"
+                      >Sim</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="garantiaContratual-sim"
+                      name="garantiaContratual"
+                      value="S"
+                      formControlName="garantiaContratual"
+                    />
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="garantiaContratual-nao"
+                      >Não</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="garantiaContratual-nao"
+                      name="garantiaContratual"
+                      value="N"
+                      formControlName="garantiaContratual"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="form.value.garantiaContratual != 'N'"
+              class="col-md-6 col-lg-3 mb-2"
+            >
+              <label>Prazo pra apresentação de Garantia (dias úteis)</label>
+              <div class="input-group">
+                <input
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  type="number"
+                  maxlength="4"
+                  class="form-control"
+                  name="prazoGarantia"
+                  formControlName="prazoGarantia"
+                />
+              </div>
+            </div>
+            <div
+              *ngIf="form.value.garantiaContratual != 'N'"
+              class="col-md-6 col-lg-3 mb-2"
+            >
+              <label>Tipo Prazo Garantia</label>
+              <select
+                name="garantia"
+                formControlName="tipoPrazoGarantia"
+                class="form-select form-control"
+                aria-label=".form-select-sm example"
+              >
+                <option value="">-- Selecione --</option>
+                <option value="DIAS">Dias</option>
+                <option value="MESES">Meses</option>
+                <option value="ANOS">Anos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 px-3 mb-3">
+      <div class="h-100 d-flex align-items-center justify-content-end">
+        <a
+          [routerLink]="'/home/contrato/dados-basicos/' + idContrato"
+          class="btn btn-light border mx-1"
+          >Voltar</a
+        >
+        <button
+          title="Salvar e Avançar"
+          class="btn btn-primary mx-1"
+          (click)="salvarDatasPrazos()"
+        >
+          Salvar e Avançar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

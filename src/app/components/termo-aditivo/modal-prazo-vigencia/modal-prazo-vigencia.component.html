@@ -1,0 +1,65 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração de Prorrogação da Vigência</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+        <div class="form-group col-6">
+            <label class="form-label">Número do Contrato:</label>
+            <input class="form-control" type="text" [value]="info.numeroContrato" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Ano do Contrato:</label>
+            <input class="form-control" type="text" [value]="info.anoContrato" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Data início da Vigência:</label>
+            <input class="form-control" type="date" [value]="info.dataInicioVigencia" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Data Fim da Vigência:</label>
+            <input class="form-control" type="date" [value]="info.dataFimVigencia" readonly>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+            <label class="form-label">Novo Prazo da Vigência: <span class="text-danger">*</span></label>
+            <input 
+              (keyup)="calcData()" 
+              class="form-control" 
+              [(ngModel)]="novoPrazoVigencia"  
+              type="text" 
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="4">
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Tipo Prazo de Vigêcia</label>
+            <select
+              name="tipoPrazoMaximoVigencia"
+              [(ngModel)]="tipoPrazoVigencia"
+              class="form-select form-control"
+              (change)="calcData()"
+            >
+              <option value="">-- Selecione --</option>
+              <option value="DIAS">Dias</option>
+              <option value="MESES">Meses</option>
+              <option value="ANOS">Anos</option>
+            </select>
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Nova data da Vigência: <span class="text-danger">*</span></label>
+            <input 
+              class="form-control" 
+              [(ngModel)]="novaDataVigencia"  
+              type="date" 
+              max="9999-12-31"
+              readonly>
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button [disabled]="!tipoPrazoVigencia || !novoPrazoVigencia" type="button" class="btn btn-primary" (click)="confirmSelection()">Salvar</button>
+  </div>
+  

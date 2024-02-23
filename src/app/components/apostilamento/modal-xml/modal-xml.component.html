@@ -1,0 +1,83 @@
+<div class="modal-header border-bottom-0">
+    <h4 class="modal-title">Exportar XML</h4>
+  </div>
+  <form [formGroup]="exportForm" (ngSubmit)="exportData()">
+    <div class="modal-body row">
+
+      <div class="form-group col-6 d-flex flex-column justify-content-end">
+        <label for="mes">Mês <span class="text-danger">*</span></label>
+        <select 
+          class="form-control form-select" 
+          id="mes" 
+          formControlName="mes"
+          (change)="exportForm.get('mes')?.markAsTouched()"
+          [ngClass]="{
+            'is-invalid':
+              exportForm.get('mes')?.invalid &&
+              exportForm.get('mes')?.touched,
+            'is-valid':
+              exportForm.get('mes')?.valid &&
+              exportForm.get('mes')?.touched
+          }"
+          >
+          <option value="null">-- Selecione o mês --</option>
+          <option value="01">Janeiro</option>
+          <option value="02">Fevereiro</option>
+          <option value="03">Março</option>
+          <option value="04">Abril</option>
+          <option value="05">Maio</option>
+          <option value="06">Junho</option>
+          <option value="07">Julho</option>
+          <option value="08">Agosto</option>
+          <option value="09">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
+      </div>
+
+      <div class="form-group col-3 d-flex flex-column justify-content-end">
+        <label for="ano">Ano <span class="text-danger">*</span></label>
+        <input 
+          type="number" 
+          class="form-control" 
+          id="ano" 
+          formControlName="ano" 
+          placeholder="2023"
+          (keydown)="exportForm.get('ano')?.markAsTouched()"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          maxlength="4"
+          [ngClass]="{
+            'is-invalid':
+              exportForm.get('ano')?.invalid &&
+              exportForm.get('ano')?.touched,
+            'is-valid':
+              exportForm.get('ano')?.valid &&
+              exportForm.get('ano')?.touched
+          }"
+          />
+      </div>
+
+      <div class="form-group col-3 mt-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="flexCheckDefault" formControlName="contratos">
+          <label class="form-check-label" for="flexCheckDefault">
+            Contratos
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="flexCheckChecked" formControlName="ajustes">
+          <label class="form-check-label" for="flexCheckChecked">
+            TAs e APs
+          </label>
+        </div>
+      </div>
+
+      </div>
+    <div class="modal-footer border-top-0">
+      <button type="button" class="btn btn-light border" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Download</button>
+    </div>
+  </form>
+  

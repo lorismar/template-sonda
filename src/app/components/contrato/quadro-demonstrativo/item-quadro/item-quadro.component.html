@@ -1,0 +1,112 @@
+<form [formGroup]="form">
+  <div class="modal-content">
+    <div class="modal-header border-bottom-0">
+      <h5 class="modal-title" id="exampleModalLabel">
+        {{ this.item ? "Editar" : "Adicionar" }} item
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="fechar()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+        <div class="row mt-2">
+          <div class="col-sm-12 col-md-6">
+            <label>Item <span class="text-danger">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="item"
+              name="item"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="255"
+            />
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <label>Grupo</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="grupo"
+              name="grupo"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="100"
+            />
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <label>Unidade <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="unidade"
+              name="unidade"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="100"
+            />
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <label>Quantidade <span class="text-danger">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="quantidade"
+              name="quantidade"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="10"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+            />
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <label>Valor Unitário <span class="text-danger">*</span></label>
+            <input
+              class="form-control"
+              formControlName="valorUnitario"
+              name="valorUnitario"
+              currencyMask
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="18"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+            />
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <label>Total <span class="text-danger">*</span></label>
+            <input
+              readonly="true"
+              class="form-control"
+              formControlName="valorTotal"
+              name="valorTotal"
+              currencyMask
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+            />
+          </div>
+          <div class="col-sm-12 col-md-12">
+            <label>Descrição <span class="text-danger">*</span></label>
+            <textarea
+              class="form-control"
+              formControlName="descricao"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="1000"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer border-top-0">
+      <button type="button" class="btn btn-light" (click)="limparCampos()">
+        Limpar
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-dismiss="modal"
+        [disabled]="!this.form.valid"
+        (click)="salvar()"
+      >
+        {{ this.item ? "Salvar" : "Adicionar" }}
+      </button>
+    </div>
+  </div>
+</form>

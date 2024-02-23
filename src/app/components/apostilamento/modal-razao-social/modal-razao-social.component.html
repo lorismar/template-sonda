@@ -1,0 +1,48 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração de Razão Social</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <label class="form-label">Atual:</label>
+        <input class="form-control" type="text" [value]="fornecedor?.razaoSocialFornecedor" readonly>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Substituir por: <span class="text-danger">*</span></label>
+        <div class="position-relative">
+            <input 
+              class="form-control" 
+              id="numeroContrato" 
+              name="numeroContrato"
+              (keydown)="pesquisarFornecedor($event)" 
+              (click)="search = !search"
+              [(ngModel)]="razaoSocial" 
+              [ngModelOptions]="{standalone: true}"
+              placeholder="Pesquisar Fornecedor..."
+              autocomplete="off" 
+              />
+              <div 
+                class="spinner-border spinner-border-sm text-info" 
+                role="status" 
+                *ngIf="loading" 
+                style="position: absolute; right: 10px; top: 10px;">
+                <span class="sr-only">Loading...</span>
+              </div>
+            <div *ngIf="search && fornecedores.length > 0" class="autocomplete">
+              <div *ngFor="let f of fornecedores" (click)="selecionarFornecedor(f)">
+                {{ f.razaoSocial }}
+              </div>
+            </div>
+            <div class="autocomplete" *ngIf="search && fornecedores.length === 0">
+              <div class="text-center">
+                Nenhum contrato encontrado.
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button [disabled]="!selectedFornecedor" type="button" class="btn btn-primary" (click)="confirmSelection()">Selecionar</button>
+  </div>
+  

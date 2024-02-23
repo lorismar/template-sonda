@@ -1,0 +1,8 @@
+<div class="actions position-relative main-button">
+    <button class="btn bg-transparent text-secondary main-button" (click)="toggle()">
+        <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+    </button>
+    <div *ngIf="show" class="actions-buttons position-absolute">
+        <ng-content></ng-content>
+    </div>
+  </div>

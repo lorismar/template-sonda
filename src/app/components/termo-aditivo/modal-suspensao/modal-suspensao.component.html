@@ -1,0 +1,77 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração de Suspensão do Contrato</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+        <div class="form-group col-6">
+            <label class="form-label">Número do Contrato:</label>
+            <input class="form-control" type="text" [value]="info.numeroContrato" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Ano do Contrato:</label>
+            <input class="form-control" type="text" [value]="info.anoContrato" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Data início da Vigência:</label>
+            <input class="form-control" type="date" [value]="info.dataInicioVigencia" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Data Fim da Vigência:</label>
+            <input class="form-control" type="date" [value]="info.dataFimVigencia" readonly>
+        </div>
+        <div class="form-group col-6">
+            <label class="form-label">Data início da Execução:</label>
+            <input class="form-control" type="date" [value]="info.dataInicioExecucao" readonly>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+            <label for="aplicacao"></label>
+            <div class="row">
+              <div class="ms-2">
+                <div class="form-check form-check-inline me-4">
+                  <label class="form-check-label" for="adesao"
+                    >Paralização</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="paralisacao"
+                    name="tipoSuspensao"
+                    value="PARALISACAO"
+                    [(ngModel)]="tipoSuspensao"
+
+                  />
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="contrato"
+                    >Reabertura</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="reabertura"
+                    name="tipoSuspensao"
+                    value="REABERTURA"
+                    [(ngModel)]="tipoSuspensao"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Data: <span class="text-danger">*</span></label>
+            <input 
+              class="form-control" 
+              type="date" 
+              [(ngModel)]="dataSuspensao" 
+              max="9999-12-31">
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button [disabled]="!dataSuspensao || !tipoSuspensao" type="button" class="btn btn-primary" (click)="confirmSelection()">Salvar</button>
+  </div>
+  

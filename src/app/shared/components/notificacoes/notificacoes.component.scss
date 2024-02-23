@@ -1,0 +1,11 @@
+.toolbar-notificacoes {
+    width: 25rem;
+    ul {
+      min-height: 4rem;
+      max-height: 72vh;
+      height: 100%;
+      overflow-y: auto;
+      padding: 0;
+      margin: 0;
+    }
+  }

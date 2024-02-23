@@ -1,0 +1,11 @@
+.search-container {
+    margin-bottom: 10px;
+  
+}
+  
+.modal {
+    &-search {
+        display: flex;
+        flex-direction: column;
+    }
+}

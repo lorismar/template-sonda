@@ -1,0 +1,54 @@
+<div class="m-3 overflow-auto">
+  <div class="stepper mx-auto">
+    <!-- <div *ngIf="!dadosbasicos; then basicoDefault; else basicoCompleto"></div> -->
+    
+    <div class="stepper-item" [ngClass]="{'active': getAtual() === 1, 'completed': getAtual() > 1}" (click)="getLink(1)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['dadosbasicos'],'fa-circle': !formService.progress['dadosbasicos']}"></i>
+      </div>
+      <span> Dados Básicos </span>
+    </div>
+    
+    <div class="stepper-item" [ngClass]="{'active': getAtual() === 2, 'completed': getAtual() > 2}" (click)="getLink(2)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['datasPrazos'],'fa-circle': !formService.progress['datasPrazos']}"></i>
+      </div>
+      <span> Datas e Prazos </span>
+    </div>  
+
+    <div class="stepper-item" [ngClass]="{'active': getAtual() === 3, 'completed': getAtual() > 3}" (click)="getLink(3)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['gestores'],'fa-circle': !formService.progress['gestores']}"></i>
+      </div>
+      <span> Gestores </span>
+    </div>
+
+    <div class="stepper-item"  [ngClass]="{'active': getAtual() === 4, 'completed': getAtual() > 4}" (click)="getLink(4)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['quadroDemonstrativo'],'fa-circle': !formService.progress['quadroDemonstrativo']}"></i>
+      </div>
+      <span> Quadro Demonstrativo </span>
+    </div>
+
+    <div class="stepper-item" [ngClass]="{'active': getAtual() === 5, 'completed': getAtual() > 5}" (click)="getLink(5)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['garantias'],'fa-circle': !formService.progress['garantias']}"></i>
+      </div>
+      <span> Garantias </span>
+    </div>
+
+    <div class="stepper-item" [ngClass]="{'active': getAtual() === 6, 'completed': getAtual() > 6}" (click)="getLink(6)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['empenhos'],'fa-circle': !formService.progress['empenhos']}"></i>
+      </div>
+      <span> Empenhos </span>
+    </div>
+    <div class="stepper-item" [ngClass]="{'active': getAtual() === 7, 'completed': getAtual() > 7}" (click)="getLink(7)">
+      <div class="circle">
+        <i class="fa" [ngClass]="{'fa-check': formService.progress['finalizarContrato'],'fa-circle': !formService.progress['finalizarContrato']}"></i>
+      </div>
+      <span> Finalizar </span>
+    </div>
+
+  </div>
+</div>

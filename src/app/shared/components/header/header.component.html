@@ -1,0 +1,132 @@
+<nav class="navbar navbar-top navbar-expand-lg border-top-0">
+  <div class="container-fluid">
+    <nav class="me-auto d-flex">
+      <fa-icon
+        [icon]="faBars"
+        class="me-3 ms-1 text-dark cursor-pointer"
+        (click)="toggleMenu()"
+      ></fa-icon>
+      <span class="text-black">
+        <div class="d-none d-md-block d-lg-block">
+          {{ labelEvent.titleApplication }}
+        </div>
+        <div class="d-block d-md-none d-lg-none" title="{{ labelEvent.titleApplication }}">
+          {{ labelEvent.sgc }}
+        </div>
+        <div
+          class="d-block d-md-none d-lg-none"
+          title="{{ labelEvent.titleApplication }}"
+        >
+        </div>
+      </span>
+    </nav>
+    <app-notificacoes></app-notificacoes>
+    <div class="dropdown">
+      <fa-icon
+        [icon]="faUniversalAccess"
+        class="fa-2x text-warning ms-2 acessibility-button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        data-bs-auto-close="outside"
+      ></fa-icon>
+      <div class="d-block">
+        <ul class="dropdown-menu dropdown-menu-end toolbar-acessibility p-2">
+          <li class="center-items py-2 text-secondary">
+            <strong>ACESSIBILIDADE</strong>
+          </li>
+          <li class="py-2 small">
+            <strong>Tamanho da Fonte</strong>
+          </li>
+          <div class="item d-inline-flex">
+            <a
+              class="btn btn-light text-secondary mx-1 fw-bold"
+              style="width: 2.688rem"
+              title="Diminuir Fonte"
+              (click)="setFontSize('a-')"
+              >A-</a
+            >
+            <fa-icon
+              class="btn btn-light text-secondary mx-1"
+              style="width: 2.688rem"
+              title="Tamanho original"
+              (click)="setFontSize('a')"
+              [icon]="faRotate"
+            ></fa-icon>
+            <a
+              class="btn btn-light text-secondary mx-1 fw-bold"
+              style="width: 2.688rem"
+              title="Aumentar fonte"
+              (click)="setFontSize('a+')"
+              >A+</a
+            >
+          </div>
+          <li class="py-2 small">
+            <strong>Controle de zoom</strong>
+          </li>
+          <div class="item">
+            <fa-icon
+              class="btn btn-light text-secondary mx-1 fw-bold"
+              style="width: 2.688rem"
+              title="Dinimuir Zoom"
+              (click)="setFontSize('a-')"
+              [icon]="faMagnifyingGlassMinus"
+            >
+            </fa-icon>
+
+            <fa-icon
+              class="btn btn-light text-secondary mx-1 fw-bold"
+              style="width: 2.688rem"
+              title="Tamanho Original"
+              (click)="setFontSize('a')"
+              [icon]="faRotate"
+            >
+            </fa-icon>
+            <fa-icon
+              class="btn btn-light text-secondary mx-1 fw-bold"
+              style="width: 2.688rem"
+              title="Aumentar Zoom"
+              (click)="setFontSize('a+')"
+              [icon]="faMagnifyingGlassPlus"
+            ></fa-icon>
+          </div>
+          <li class="py-2 small">
+            <strong>Contraste</strong>
+          </li>
+          <div class="item">
+            <fa-icon
+              class="btn btn-light text-secondary mx-1 fw-bold"
+              style="width: 2.688rem"
+              title="Alterar Contraste"
+              (click)="contraste()"
+              [icon]="faCircleHalfStroke"
+            ></fa-icon>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="dropdown">
+      <fa-icon
+        id="rcorners1"
+        [icon]="faUsers"
+        class="text ms-2 text-secondary"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        data-bs-auto-close="outside"
+      ></fa-icon>
+      <div class="d-flex">
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a
+              class="dropdown-item text-center"
+              (click)="deslogar()"
+              style="cursor: pointer"
+            >
+              Sair
+              <fa-icon [icon]="faArrowRightToBracket"> </fa-icon>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

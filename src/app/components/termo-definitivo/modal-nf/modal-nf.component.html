@@ -1,0 +1,86 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Dados da Nota Fiscal</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body row" [formGroup]="form">
+    <div class="form-group col-6">
+      <label class="form-label">Número: <span class="text-danger">*</span></label>
+      <input 
+        class="form-control" 
+        type="text" 
+        formControlName="numero" 
+        mask="000.000.000||000.000||000.000.0||000.000.00"
+        (keydown)="form.get('numero')?.markAsTouched()"
+        [ngClass]="{
+          'is-invalid':
+            form.get('numero')?.invalid &&
+            form.get('numero')?.touched,
+          'is-valid':
+            form.get('numero')?.valid &&
+            form.get('numero')?.touched
+        }">
+    </div>
+    <div class="col-md-6 position-relative d-flex flex-column justify-content-end">
+      <label class="form-label">CPF/CNPJ <span class="text-danger">*</span></label>
+      <input
+        readonly="true"
+        type="text"
+        class="form-control"
+        name="cpfCnpj"
+        formControlName="cpfCnpj"
+        (keydown)="form.get('cpfCnpj')?.markAsTouched()"
+        mask="000.000.000-00||00.000.000/0000-00"
+      />
+      <fa-icon class="ms-2 position-absolute" style="right: 25px; top: 38px; cursor: pointer;" [icon]="faSearch" (click)="pesquisarFornecedor()"></fa-icon>
+    </div>
+    <div class="form-group col-6">
+      <label class="form-label">Razão Social: <span class="text-danger">*</span></label>
+      <input  class="form-control" type="text" formControlName="razaoSocial" readonly>
+    </div>
+    <div class="form-group col-6">
+      <label class="form-label">Data da Nota Fiscal: <span class="text-danger">*</span></label>
+      <input class="form-control" type="date" formControlName="dataNotaFiscal">
+    </div>
+    <div class="form-group col-6">
+      <label class="form-label">Data de Recebimento da Nota Fiscal:</label>
+      <input class="form-control" type="date" formControlName="dataRecebimentoNotaFiscal" (change)="calculatePaymentDate()">
+    </div>
+    <div class="form-group col-6">
+      <label class="form-label">Valor Total: <span class="text-danger">*</span></label>
+      <input class="form-control" type="text" formControlName="valorTotal" currencyMask>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Prazo para Pagamento</label>
+      <input
+        type="text"
+        class="form-control"
+        name="prazoPagamento"
+        [value]="prazoPagamento"
+        disabled="true"
+    />
+  </div>
+  <div class="form-group col-6">
+    <label class="form-label">Data da Prevista para Pagamento: <span class="text-danger">*</span></label>
+    <input class="form-control" type="date" formControlName="dataPrevistaPagamento" readonly>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="form-label">Tipo de Contrato</label>
+    <select
+      class="form-select form-control"
+      aria-label=".form-select-sm example"
+      name="tipoContrato"
+      formControlName="tipoContrato"
+    >
+      <option selected [ngValue]="null" class="text-center" selected>
+        --- Selecione ---
+      </option>
+      <option value="PEQUENO_VALOR_LEI_866693">Pequeno Valor (Lei 8.666/93)</option>
+      <option value="PEQUENO_VALOR_LEI_141332021">Pequeno Valor (Lei 14.133/2021)</option>
+      <option value="OUTROS">Outros</option>
+    </select>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" [disabled]="!form.valid" (click)="salvar()">Salvar</button>
+  </div>
+  

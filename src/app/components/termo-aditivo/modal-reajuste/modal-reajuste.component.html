@@ -1,0 +1,231 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração de Reajuste do Contrato</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body" style="
+    max-height: 66vh;
+    overflow: auto;
+    "
+    >
+    <div class="row">
+        <div class="col-3 mb-2">
+            <label class="form-label">Número do Contrato:</label>
+            <input class="form-control" type="text" [value]="info.numeroContrato" readonly>
+        </div>
+        <div class="col-3 mb-2">
+            <label class="form-label">Ano do Contrato:</label>
+            <input class="form-control" type="text" [value]="info.anoContrato" readonly>
+        </div>
+        <div class="col-3 mb-2">
+            <label class="form-label">Valor Inicial do Contrato:</label>
+            <input class="form-control" type="text" [value]="valorAtualContrato | currency" readonly currencyMask>
+        </div>
+        <div class="col-3 mb-2">
+          <label class="form-label">Valor Atual do Contrato:</label>
+          <input class="form-control" type="text" [value]="info.valorOriginalContrato + info.valorTermosAditivos | currency" readonly currencyMask>
+      </div>
+        <div class="col-3 mb-2">
+            <label class="form-label">Mês Índice de Correção</label>
+            <input class="form-control" type="text" [value]="info.mesIndiceCorrecao ? mesPorValor[info.mesIndiceCorrecao] : 'Não Cadastrado'" readonly>
+          </div>
+
+        <div class="col-3 mb-2">
+            <label class="form-label">Índice de Correção:</label>
+            <input class="form-control" type="text" [value]="info.nomeIndiceCorrecao ? info.nomeIndiceCorrecao : 'Não Cadastrado'" readonly>
+        </div>
+    
+          <div class="col-3 mb-2">
+            <label class="form-label" for="aplicacao">Houve negociação? <span class="text-danger">*</span></label>
+            <div class="row">
+              <div class="ms-2">
+                <div class="form-check form-check-inline me-4">
+                  <label class="form-check-label" for="houveNegociacao"
+                    >Sim</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="houveNegociacao"
+                    name="houveNegociacao"
+                    value="S"
+                    [(ngModel)]="houveNegociacao"
+                    (change)="setNegociacao()"
+
+                  />
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="houveNegociacao"
+                    >Não</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="houveNegociacao"
+                    name="houveNegociacao"
+                    value="N"
+                    [(ngModel)]="houveNegociacao"
+                    (change)="setNegociacao()"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-3 mb-2" *ngIf="houveNegociacao === 'N'">
+            <label>Percentual de Correção</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="number"
+                name="percentual"
+                [value]="percentualCorrecao"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                readonly
+              />
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+
+                    
+          <div class="col-3 mb-2" *ngIf="houveNegociacao === 'S'">
+            <label>Percentual Negociado</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="number"
+                name="percentualNegociado"
+                [value]="percentualCorrecao"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                readonly
+              />
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+          
+          <div class="col-4 mb-2 d-flex flex-column justify-content-end" *ngIf="houveNegociacao === 'S'">
+            <label class="form-label" for="aplicacao">Índice de Correção <span class="text-danger">*</span></label>
+            <div class="position-relative">
+              <input 
+                class="form-select" 
+                name="indiceCorrecao"
+                placeholder="Pesquisar..."
+                (keydown)="buscarIndices($event)"
+                 [(ngModel)]="selectedIndice"
+                (click)="search = !search"
+                autocomplete="off" 
+                />
+                <div 
+                  class="spinner-border spinner-border-sm text-info" 
+                  role="status" 
+                  *ngIf="loading" 
+                  style="position: absolute; right: 10px; top: 10px;">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              <div *ngIf="search && indices.length > 0" class="autocomplete">
+                <div *ngFor="let indice of indices" (click)="selecionarIndice(indice)">
+                  {{ indice.nome + ' - ' + indice.codigo.slice(0, 50) + (indice.codigo.length > 49 ? '...' : '')}}
+                </div>
+              </div>
+              <div class="autocomplete" *ngIf="search && indices.length === 0">
+                <div class="text-center">
+                  Nenhum indice de correção encontrado.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4 mb-2" *ngIf="houveNegociacao === 'S'">
+            <label class="form-label">Valor do Contrato Negociado </label>
+            <input
+              currencyMask
+              readonly="true"
+              class="form-control"
+              name="valorContratoNegociado"
+              [(ngModel)]="valorContratoNegociado"
+            />
+          </div>
+
+          <div class="col-4 mb-2">
+            <label class="form-label">Valor Inicial do Contrato Atualizado </label>
+            <input
+              currencyMask
+              readonly="true"
+              class="form-control"
+              name="valorNegociado"
+              [(ngModel)]="valorNegociado"
+            />
+          </div>
+
+
+          <div class="col-4 mb-2">
+            <label class="form-label">Valor Total do TA:</label>
+            <input class="form-control" type="text" [value]="valorTermoAditivo | currency" readonly currencyMask>
+        </div>
+
+        <div class="col-4 mb-2">
+            <label class="form-label">Valor do Contrato após o TA:</label>
+            <input class="form-control" type="text" [value]="valorContratoAtualizado | currency" readonly currencyMask>
+        </div>
+      </div>
+      <div class="table-responsive overflow-auto">
+        <table
+        *ngIf="listaQuadroDemonstrativo.length > 0"
+        class="table table-striped table-hover"
+        style="min-width: 1000px; width: 100%;" 
+    >
+        <thead class="bg-light">
+        <tr>
+            <th width="60" scope="col">Item</th>
+            <th width="200" scope="col">Descrição</th>
+            <th width="100" scope="col">Grupo</th>
+            <th width="80" scope="col">Unidade</th>
+            <th width="120" scope="col">Quant. Original</th>
+            <th width="150" scope="col" style="z-index: 2;">Percentual de {{houveNegociacao === 'S' ? 'Negociado' : 'Correção'}} <span class="text-danger">*</span></th>
+            <th class="text-end" width="100" scope="col">
+            Valor Unitário
+            </th>
+            <th class="text-end" width="10" scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            *ngFor="
+            let item of listaQuadroDemonstrativo;
+            let i = index
+            "
+        >
+            <td [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">{{ item.item }}</td>
+            <td [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">{{ item.descricao }}</td>
+            <td [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">{{ item.grupo }}</td>
+            <td [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">{{ item.unidade }}</td>
+            <td [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">{{ item.quantidadeOriginal + item.quantidadeAdicional - item.quantidadeSupressao }}</td>
+            <td [ngClass]="{'text-success':  item.idItemQuadroDemosOriginal}">
+               
+              <div class="input-group" style="z-index: 1;">
+                <input 
+                  class="form-control" 
+                  type="text" 
+                  [(ngModel)]="item.percentualCorrecao"
+                  (change)="calcularPorcentagemNegociacao()"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="4"
+                >
+                <span class="input-group-text">%</span>
+              </div>
+            
+            </td>
+            <td class="text-end" [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">{{calcValorUnitario(item) | currency}}</td>
+            <td class="text-end" style="vertical-align: middle" [ngClass]="{'text-success': item.idItemQuadroDemosOriginal}">
+            {{ this.valorTotalItem(item) | currency }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+      </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary"  [disabled]="!checkForm()" (click)="confirmSelection()">Salvar</button>
+  </div>
+  

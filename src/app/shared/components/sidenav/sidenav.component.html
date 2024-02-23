@@ -1,0 +1,45 @@
+<nav class="nav-total" id="sidebar">
+  <div class="sidebar-header">
+    <img
+      class="sidebar-logo my-4"
+      [src]="'assets/logo-tjro.png'"
+      alt="Logo brasão do TJRO"
+      title="Logo brasão do TJRO"
+    />
+  </div>
+
+  <ul class="list-unstyled components">
+    <li
+      class="d-flex justify-content-start align-items-center text-light p-2"
+      title="{{ this.dadosUsuario ? this.dadosUsuario.firstName : '' }}"
+    >
+      <fa-icon id="rcorners1" [icon]="faUser" class="text"></fa-icon>
+      <span class="ms-2 text-start">{{ this.dadosUsuario ? this.dadosUsuario.firstName : '' }}</span>
+    </li>
+  </ul>
+
+  <hr />
+
+  <ul class="list-unstyled components m-0 list-group">
+    <ng-container *ngFor="let section of menu">
+      <li 
+        class="section-menu small text-light fw-light text-start m-2 opacity-75" 
+        [appHasPermission]="section.permissions">
+        {{ section.label }}
+      </li>
+      <ng-container *ngFor="let link of section.menu">
+          <li
+            [appHasPermission]="link.permissions"
+            [routerLink]="link.routerLink"
+            [routerLinkActive]="'active'"
+            class="cursor-pointer p-2 list-group-item d-flex justify-content-start align-items-center border-0 rounded text-light"
+            [title]="link.label"
+            (click)="link.onClick ? link?.onClick(modalService) : null"
+          >
+            <fa-icon id="rcorners1" [icon]="link.icon"></fa-icon>
+            <span class="ms-2">{{ link.label }}</span>
+          </li>
+      </ng-container>
+    </ng-container>
+  </ul>
+</nav>

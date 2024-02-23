@@ -1,0 +1,132 @@
+<div class="container">
+  <app-navegacao
+    [paginaAnterior]="'Home'"
+    [paginaAtual]="'Contrato'"
+    [proximaPagina]="'Cadastro'"
+  ></app-navegacao>
+  <app-stepper></app-stepper>
+  <div class="d-flex align-items-center justify-content-end m-3">
+    <button class="btn btn-secondary mx-1 position-relative" (click)="cadastrarEmpenho()" [appHasPermission]="['SGC-Cadastrar_NotaEmpenho']">
+      <span style="font-weight: 500">Cadastrar Empenho</span>
+    <fa-icon [icon]="faFile" class="ms-2"></fa-icon>
+    </button>
+    <button
+      title="Adicionar Empenho"
+      type="button"
+      class="btn btn-primary"
+      (click)="adicionar()"
+    >
+      Adicionar Empenho
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-plus-lg"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
+        />
+      </svg>
+    </button>
+  </div>
+  <div class="card m-3 p-2 shadow">
+    <div
+      class="card-header bg-transparent text-secondary bg-white border-bottom-0"
+    >
+      <h6 class="card-title m-0 fw-bold">Lista Empenhos</h6>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table
+              *ngIf="formService.listaEmpenhosPorContrato.length > 0"
+              class="table table-striped table-hover"
+              style="min-width: 1400px; width: 100%"
+            >
+              <thead>
+                <tr>
+                  <th width="150" scope="col">Nº Empenho</th>
+                  <th width="200" scope="col">Valor</th>
+                  <th width="120" scope="col">Modalidade</th>
+                  <th width="300" scope="col">Tipo</th>
+                  <th width="120" scope="col">Fonte</th>
+                  <th width="300" scope="col">Funcional Programática</th>
+                  <th width="150" scope="col">PA</th>
+                  <th width="300" scope="col">Elemento de Despesa</th>
+                  <th width="300" scope="col">Documento de Origem</th>
+                  <th width="200" scope="col">Descrição do Projeto</th>
+                  <th
+                    width="100"
+                    class="text-center fixed-right-column"
+                    scope="col"
+                  >
+                    Ações
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of formService.listaEmpenhosPorContrato">
+                  <td style="vertical-align: middle">{{ item.numeroEmpenho }}</td>
+                  <td style="vertical-align: middle">
+                    {{ item.valor | currency }}
+                  </td>
+                  <td style="vertical-align: middle">{{ this.modalidade[item.modalidade] }}</td>
+                  <td style="vertical-align: middle">{{ this.tipoEmpenho[item.tipoEmpenho] }}</td>
+                  <td style="vertical-align: middle">{{ item.fonteRecurso }}</td>
+                  <td style="vertical-align: middle">
+                    {{ item.funcionalProgramatica }}
+                  </td>
+                  <td style="vertical-align: middle">{{ item.pa }}</td>
+                  <td style="vertical-align: middle">
+                    {{ this.utils.lastDigits(item.elementoDespesa) }}
+                  </td>
+                  <td style="vertical-align: middle">
+                    {{ this.documentoOrigem[item.documentoOrigem] }}
+                  </td>
+                  <td width="560">
+                    {{ item.descricaoProjeto }}
+                  </td>
+                  <td class="text-center fixed-right-column">
+                    <button
+                      type="button"
+                      class="btn bg-transparent btn-sm"
+                      title="Remover empenho {{ item.numero }}"
+                      (click)="removerItem(item)"
+                    >
+                      <fa-icon [icon]="faTrashCan"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="formService.listaEmpenhosPorContrato.length == 0">
+              <p>Nenhum empenho cadastrado neste contrato!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div
+      class="h-100 d-flex align-items-center justify-content-end mt-4 px-3 mb-3"
+    >
+      <a
+        class="btn btn-light border me-2"
+        [routerLink]="'/home/contrato/garantias/' + idContrato"
+        >Voltar</a
+      >
+      <button
+        class="btn btn-primary"
+        (click)="salvar()"
+      >
+        Salvar e Avançar
+      </button>
+      <!-- <button class="btn btn-secondary btn-lg mx-1" (click)="cancelar()">Cancelar</button> -->
+    </div>
+  </div>
+</div>

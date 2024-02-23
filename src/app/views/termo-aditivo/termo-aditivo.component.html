@@ -1,0 +1,295 @@
+<div class="container mt-3 mb-3">
+  <form [formGroup]="form">
+      <div class="card p-3 shadow">
+          <div class="card-title p-0 mb-4 fw-bold">
+          <h6>Termo Aditivo</h6>
+          <span class="badge bg-warning text-dark" *ngIf="this.idTermoAditivo">ID: {{ this.idTermoAditivo }}</span>
+
+        </div>
+          <div class="content">
+              <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+              <div class="row">
+                <div class="col-4 mb-2 position-relative">
+                  <label class="form-label">Nº Contrato <span class="text-danger">*</span></label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="numeroContrato"
+                    formControlName="numeroContrato"
+                    readonly="true"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  />
+                  <button
+                    *ngIf="!this.form.value.idAjusteContrato"
+                    class="position-absolute btn bg-transparent text-secondary"
+                    style="right: 12px; top: 30px"
+                    type="button"
+                    (click)="abrirModal()"
+                  >
+                    <fa-icon [icon]="faRepeat" ></fa-icon>
+                  </button>
+                  <span class="badge bg-secondary">
+                    Valor do Contrato:
+                    {{ termoAditivoService.contrato?.valorTotal | currency : "BRL" }}
+                  </span>
+                </div>
+                <div class="col-4 mb-2">
+                    <label for="numero" class="form-label">Nº do Termo Aditivo</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="numero" 
+                      formControlName="numero"
+                      >
+                </div>
+                  <div class="col-4 mb-2">
+                      <label for="ano" class="form-label">Ano do Termo Aditivo <span class="text-danger">*</span></label>
+                      <input
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                        type="number"
+                        maxlength="4"
+                        class="form-control"
+                        name="ano"
+                        formControlName="ano"
+                        (keydown)="form.get('ano')?.markAsTouched()"
+                        [ngClass]="{
+                          'is-invalid':
+                            form.get('ano')?.invalid && form.get('ano')?.touched,
+                          'is-valid':
+                            form.get('ano')?.valid && form.get('ano')?.touched
+                        }"
+                    />
+                  </div>
+                  <div class="col-4 mb-2">
+                    <label class="form-label">Data Assinatura <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <input
+                        type="date"
+                        max="9999-12-31"
+                        class="form-control"
+                        name="dataAssinatura"
+                        formControlName="dataAssinatura"
+                        (change)="form.get('dataAssinatura')?.markAsTouched()"
+                        [ngClass]="{
+                          'is-invalid':
+                            form.get('dataAssinatura')?.invalid && form.get('dataAssinatura')?.touched,
+                          'is-valid':
+                            form.get('dataAssinatura')?.valid && form.get('dataAssinatura')?.touched
+                        }"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 mb-2">
+                      <label for="codigoUnidadeOrcamentaria" class="form-label">Cod. Unidade Orçamentária(UO) <span class="text-danger">*</span></label>
+                      <select
+                      class="form-select"
+                      name="codigoUnidadeOrcamentaria"
+                      formControlName="codigoUnidadeOrcamentaria"
+                      (change)="form.get('codigoUnidadeOrcamentaria')?.markAsTouched()"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('codigoUnidadeOrcamentaria')?.invalid && form.get('codigoUnidadeOrcamentaria')?.touched,
+                        'is-valid':
+                          form.get('codigoUnidadeOrcamentaria')?.valid && form.get('codigoUnidadeOrcamentaria')?.touched
+                      }"
+                    >
+                      <option [value]="null" class="text-center">
+                        -- Selecione --
+                      </option>
+                      <option value="TJRO_00001">00001 - TJRO</option>
+                      <option value="FUJU_03011">03011 - FUJU</option>
+                    </select>
+                  </div>
+                  <div class="col-4 mb-2">
+                    <label class="form-label">Data da Publicação <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <input
+                        type="date"
+                        max="9999-12-31"
+                        class="form-control"
+                        name="dataPublicacao"
+                        formControlName="dataPublicacao"
+                        (change)="form.get('dataPublicacao')?.markAsTouched()"
+                        [ngClass]="{
+                          'is-invalid':
+                            form.get('dataPublicacao')?.invalid && form.get('dataPublicacao')?.touched,
+                          'is-valid':
+                            form.get('dataPublicacao')?.valid && form.get('dataPublicacao')?.touched
+                        }"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 mb-2">
+                      <label for="localPublicacao" class="form-label">Local da Publicação <span class="text-danger">*</span></label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="localPublicacao" 
+                        formControlName="localPublicacao"
+                        (keydown)="form.get('localPublicacao')?.markAsTouched()"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength="255"
+                        [ngClass]="{
+                          'is-invalid':
+                            form.get('localPublicacao')?.invalid && form.get('localPublicacao')?.touched,
+                          'is-valid':
+                            form.get('localPublicacao')?.valid && form.get('localPublicacao')?.touched
+                        }"
+                        >
+                  </div>
+                  <div class="col-4 mb-2">
+                      <label for="linkPublicacao" class="form-label">Link da Publicação</label>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="linkPublicacao" 
+                        formControlName="linkPublicacao"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength="255">
+                  </div>
+                  <div class="col-4 mb-2">
+                      <label for="cnpjContratante" class="form-label">Nº do Processo SEI <span class="text-danger">*</span></label>
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="numeroProcessoSei"
+                          formControlName="numeroProcessoSei"
+                          (keydown)="form.get('numeroProcessoSei')?.markAsTouched()"
+                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                          maxlength="255"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('numeroProcessoSei')?.invalid && form.get('numeroProcessoSei')?.touched,
+                            'is-valid':
+                              form.get('numeroProcessoSei')?.valid && form.get('numeroProcessoSei')?.touched
+                          }"
+                        />
+                      </div>
+                  </div>
+                  <div class="col-4 mb-2">
+                      <label for="cnpjContratante" class="form-label">Ano do Processo SEI <span class="text-danger">*</span></label>
+                      <div class="input-group">
+                        <input
+                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                          onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                          type="number"
+                          maxlength="4"
+                          class="form-control"
+                          name="anoProcessoSei"
+                          formControlName="anoProcessoSei"
+                          (keydown)="form.get('anoProcessoSei')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('anoProcessoSei')?.invalid && form.get('anoProcessoSei')?.touched,
+                            'is-valid':
+                              form.get('anoProcessoSei')?.valid && form.get('anoProcessoSei')?.touched
+                          }"
+                        />
+                      </div>
+                  </div>
+                  <div class="col-4 mb-2" *ngIf="this.idTermoAditivo && situacao">
+                    <label for="situacao" class="form-label">Situação do Termo Aditivo</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        maxlength="4"
+                        class="form-control"
+                        name="situacao"
+                        [value]="situacao"
+                        disabled
+                      />
+                    </div>
+                </div>
+              </div>
+              <div class="mt-4 mb-2 d-flex flex-column justify-content-center align-items-center position-relative">
+                <label for="cnpjContratante" class="form-label">Motivo da Aditivação <span class="text-danger">*</span></label>
+                <div class="position-relative">
+                  <button
+                    type="button"
+                    class="btn btn-primary mx-1"
+                    (click)="openAdicionar()"
+                    [disabled]="motivoOptions.length === 0"
+                  >
+                  <span style="font-weight: 500">Adicionar</span>
+                  <fa-icon [icon]="faPlus" class="ms-1"></fa-icon>
+                  </button>
+                  <div *ngIf="search" class="custom-dropdown autocomplete">
+                    <div *ngFor="let motivo of motivoOptions" (click)="selecionarMotivo(motivo)">
+                      {{ labelMotivos[motivo] }}
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <label class="form-label"*ngIf="motivos.value.length > 0">Aditivação</label>
+            <div class="list-group" *ngIf="motivos.value.length > 0">
+              <ng-container *ngFor="let motivo of motivos.controls; let i = index">
+                <div class="list-group-item d-flex row p-0 m-0">
+                  <div class="col-4 bg-light p-2">
+                    <span class="ms-2">{{ labelMotivos[motivo.get('motivoAditivacao')?.value] }}</span>
+                  </div>
+                  <div class="col-3 p-2">
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'SUPRESSAO'">Valor do TA: {{ motivo.get('acaoAlteracaoItemValor.valorTermoAditivo')?.value | currency }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'ACRESCIMO'">Valor do TA: {{ motivo.get('acaoAlteracaoItemValor.valorTermoAditivo')?.value | currency }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'ALTERACAO_RAZAO_SOCIAL'">Nova Razão Social: {{ motivo.get('acaoTrocaFornecedor.razaoSocialFornecedor')?.value }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'MODIFICACAO_VALOR_CONTRATUAL'">Novo valor: {{ motivo.get('acaoTrocaValor.valorContratoAtualizado')?.value | currency }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'SUSPENSAO'">Data da Suspensão: {{ motivo.get('acaoSuspensao.dataSuspensao')?.value | date: 'dd/MM/yyy' }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'PRORROGACAO_VIGENCIA'">Nova data: {{ motivo.get('acaoPrazo.novaDataVigencia')?.value | date: 'dd/MM/yyy' }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'REAJUSTE'">Valor do TA: {{ motivo.get('acaoReajuste.valorTermoAditivo')?.value | currency }}</span>
+                    <span *ngIf="motivo.get('motivoAditivacao')?.value === 'REEQUILIBRIO'">Valor do TA: {{ motivo.get('acaoReequilibrio.valorTermoAditivo')?.value | currency }}</span>
+                    <span [ngbTooltip]="motivo.get('acaoOutros.outros')?.value" *ngIf="motivo.get('motivoAditivacao')?.value === 'OUTROS'">{{ 
+                      motivo.get('acaoOutros.outros')?.value.length > 25
+                      ? motivo.get('acaoOutros.outros')?.value.substring(0,25) + "..."
+                      : motivo.get('acaoOutros.outros')?.value
+                    
+                    }}</span>
+                  </div>
+                  <div class="col-3 p-2">
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'SUPRESSAO'">Valor Original: {{ this.termoAditivoService.info.valorOriginalContrato | currency }}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'ACRESCIMO'">Valor Original: {{ this.termoAditivoService.info.valorOriginalContrato | currency }}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'ALTERACAO_RAZAO_SOCIAL'">Razão Social: {{ motivo.get('acaoTrocaFornecedor.nomeUltimoFornecedor')?.value ? motivo.get('acaoTrocaFornecedor.nomeUltimoFornecedor')?.value : motivo.get('fornecedor.razaoSocialFornecedor')?.value }}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'MODIFICACAO_VALOR_CONTRATUAL'">Valor do Contrato: {{ this.termoAditivoService.contrato.valorTotal | currency }}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'SUSPENSAO'">Data de Término da Vigência: {{ this.termoAditivoService.info.dataFimVigencia | date: 'dd/MM/yyy' }}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'PRORROGACAO_VIGENCIA'">Fim da Vigência: {{ this.termoAditivoService.info.dataFimVigencia | date: 'dd/MM/yyy' }}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'REAJUSTE'">Valor original do Contrato: {{ this.termoAditivoService.info.valorOriginalContrato | currency}}</s>
+                    <s *ngIf="motivo.get('motivoAditivacao')?.value === 'REEQUILIBRIO'">Valor original do Contrato: {{ this.termoAditivoService.info.valorOriginalContrato | currency}}</s>
+                  </div>
+                  <div class="d-flex col-2 justify-content-end align-items-center">
+                    <button
+                      type="button"
+                      class="btn bg-transparent text-secondary"
+                      title="Editar"
+                      [disabled]="motivo.get('motivoAditivacao')?.value === 'REEQUILIBRIO' || this.situacao === 'Finalizado'"
+                      (click)="selecionarMotivo( motivo.get('motivoAditivacao')?.value, motivo.value, i)"
+                    >
+                      <fa-icon [icon]="faPenToSquare"></fa-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn bg-transparent text-secondary"
+                      title="Excluir"
+                      (click)="deleteItem(i)"
+                      [disabled]="this.situacao === 'Finalizado'"
+                    >
+                      <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+
+                  </div>
+
+                </div>
+              </ng-container>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+              <div class="border-bottom-0">
+                <a type="button" class="btn btn-secondary mx-1" href="home/meus-contratos">Cancelar</a>
+                <button *ngIf="this.idTermoAditivo" [disabled]="!this.form.valid || this.situacao === 'Finalizado'" type="submit" class="btn btn-secondary mx-1" (click)="finalizar()">Finalizar</button>
+                <button [disabled]="!this.form.valid || this.situacao === 'Finalizado'" type="submit" class="btn btn-primary mx-1" (click)="salvar()">Salvar</button>
+              </div>
+          </div>
+
+      </div>
+  </form>
+</div>

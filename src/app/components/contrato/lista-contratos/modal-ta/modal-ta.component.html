@@ -1,0 +1,86 @@
+<app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+<div class="modal-header border-bottom-0">
+  <h5 class="modal-title">Termo Aditivo - {{ query }}</h5>
+  <button type="button" class="btn-close" (click)="modal.close()"></button>
+</div>
+<div class="modal-body">
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Número Termo Aditivo</th>
+          <th>Número Processo SEI</th>
+          <th>Data da Publicação</th>
+          <th>Data da Assinatura</th>
+          <th>UO</th>
+          <th class="text-center">Status</th>
+          <th width="80" class="text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of termos">
+          <td>{{ item.numero }}</td>
+          <td>{{ item.numeroProcessoSei }}</td>
+          <td>{{ item.dataPublicacao | date : "dd/MM/yyy" }}</td>
+          <td>{{ item.dataAssinatura | date : "dd/MM/yyy" }}</td>
+          <td>{{ this.codUC[item.codigoUnidadeOrcamentaria] }}</td>
+          <td class="text-center pt-3">
+            <ng-container
+              *ngIf="item.status === 'EM_ABERTO'"
+            >
+              <fa-icon
+                [icon]="faCircleXmark"
+                class="fa-xl text-danger"
+              ></fa-icon>
+            </ng-container>
+            <ng-container
+              *ngIf="item.status === 'FINALIZADO'"
+            >
+              <fa-icon
+                [icon]="faCheckCircle"
+                class="fa-xl text-success"
+              ></fa-icon>
+            </ng-container>
+          </td>
+          <td class="text-end fixed-right-column positoin-relative">
+            <app-actions>
+              <button
+                type="button"
+                class="btn bg-transparent text-secondary"
+                title="Editar"
+                (click)="modal.close()"
+                [disabled]="item.status === 'FINALIZADO'"
+                [appHasPermission]="['SGC-Editar_TermoAditivo']"
+                [routerLink]="[
+                  '/home/termo-aditivo/',
+                  item.idTermoAditivo
+                ]"
+              >
+              <fa-icon [icon]="faPenToSquare"></fa-icon>
+              </button>
+              <button
+                [appHasPermission]="['SGC-Editar_TermoAditivo']"
+                [disabled]="item.status === 'FINALIZADO'"
+                type="button"
+                class="btn bg-transparent text-secondary"
+                title="Excluir"
+                (click)="remover(item)"
+                >
+                <fa-icon [icon]="faTrashCan"></fa-icon>
+              </button>
+            </app-actions>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-4 d-flex justify-content-end">
+      <button (click)="setTA()" class="btn btn-primary" [appHasPermission]="['SGC-Cadastrar_TermoAditivo']">
+        Cadastrar Termo Aditivo <fa-icon class="ms-2" [icon]="faPlus"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal-footer border-top-0">
+<button type="button" class="btn btn-primary" (click)="modal.close()">Fechar</button>
+</div> -->

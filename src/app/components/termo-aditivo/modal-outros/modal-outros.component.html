@@ -1,0 +1,25 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração Outros Itens</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <label class="form-label">Descrição das alterações: <span class="text-danger">*</span></label>
+        <div class="position-relative">
+            <textarea 
+              class="form-control" 
+              id="outros" 
+              name="outros"
+              [(ngModel)]="outros" 
+              placeholder=""
+              autocomplete="off" 
+              ></textarea>
+          </div>
+          <small [ngClass]="{'text-danger': outros.length > 1000}">{{outros.length}}/1000</small>
+    </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="confirmSelection()" [disabled]="outros.length > 1000">Salvar</button>
+  </div>
+  

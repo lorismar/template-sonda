@@ -1,0 +1,86 @@
+<app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+<div class="modal-header border-bottom-0">
+  <h5 class="modal-title">Termo de Recebimento Definitivo - {{ query }}</h5>
+  <button type="button" class="btn-close" (click)="modal.close()"></button>
+</div>
+<div class="modal-body">
+  <div class="table-responsive">
+    <table class="table table-hover" *ngIf="termos.length > 0">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Servidor Responsável</th>
+          <th>Observação</th>
+          <th>Unidade</th>
+          <th>Data de Recebimento</th>
+          <th>Constatação</th>
+          <th class="text-center">Status</th>
+          <th class="text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of termos">
+          <td>{{ item.idTermoRecebimentoDefinitivo }}</td>
+          <td>{{ item.nomeServidorResponsavel }}</td>
+          <td>{{ item.observacao ? (item.observacao.slice(0, 50) + (item.observacao.length > 49 ? '...' : '')) : ''}}</td>
+          <td>{{ item.unidade }}  </td>
+          <td>{{ item.dataRecebimento | date : "dd/MM/yyyy" }}</td>
+          <td>{{ constatacao[item.constatacao] }}</td>
+          <td class="text-center pt-3">
+            <ng-container
+              *ngIf="item.status === 'EM_ABERTO'"
+            >
+              <fa-icon
+                [icon]="faCircleXmark"
+                class="fa-xl text-danger"
+              ></fa-icon>
+            </ng-container>
+            <ng-container
+              *ngIf="item.status === 'FINALIZADO'"
+            >
+              <fa-icon
+                [icon]="faCheckCircle"
+                class="fa-xl text-success"
+              ></fa-icon>
+            </ng-container>
+          </td>
+          <td class="text-end fixed-right-column position-relative">
+            <app-actions>
+                <button
+                  type="button"
+                  class="btn bg-transparent text-secondary"
+                  title="Editar"
+                  (click)="modal.close()"
+                  [appHasPermission]="['SGC_ADMINISTRADOR']"
+                  [routerLink]="[
+                    '/home/termo-definitivo',
+                    item.idTermoRecebimentoDefinitivo
+                  ]"
+                >
+                <fa-icon [icon]="faPenToSquare"></fa-icon>
+                </button>
+                <button
+                  type="button"
+                  class="btn bg-transparent text-secondary"
+                  title="Excluir"
+                  [disabled]="item.status === 'FINALIZADO'"
+                  (click)="remover(item)"
+                  [appHasPermission]="['SGC_ADMINISTRADOR']"
+                >
+                  <fa-icon [icon]="faTrashCan"></fa-icon>
+                </button>
+            </app-actions>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="termos.length === 0">
+        <p>Nenhum Termo de Recebimento cadastrado.</p>
+      </div>
+    <div class="mt-4 d-flex justify-content-end">
+      <button (click)="setOrdem()" class="btn btn-primary" [appHasPermission]="['SGC_ADMINISTRADOR']">
+        Cadastrar Termo de Recebimento Definitivo <fa-icon class="ms-2" [icon]="faPlus"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>

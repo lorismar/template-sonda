@@ -1,0 +1,8 @@
+.quadro th{
+    font-size: 0.85rem;
+}
+
+.totalizer-itens-sum {
+    text-align: end;
+    color: var(--bs-card-title-color);
+}

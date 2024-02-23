@@ -1,0 +1,24 @@
+$expandedWidthMenu: 250px;
+$colapsedWidthMenu: 74px;
+
+#content {
+  width: calc(100% - $expandedWidthMenu);
+  min-height: 100vh;
+  position: absolute;
+  left: $expandedWidthMenu;
+  top: 0;
+  transition: all 0.3s;
+  z-index: 1;
+}
+
+@media (max-width: 767px) {
+  #content {
+    left: 0;
+  }
+
+  #content {
+    width: 100%;
+    transition: all 0.3s !important;
+  }
+
+}

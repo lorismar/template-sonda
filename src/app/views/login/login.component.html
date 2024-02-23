@@ -1,0 +1,138 @@
+<div class="dropdown configs-position-icon">
+  <fa-icon
+    [icon]="faUniversalAccess"
+    class="fa-2x text-warning ms-2 acessibility-button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    data-bs-auto-close="outside"
+  ></fa-icon>
+  <div class="d-block">
+    <ul class="dropdown-menu dropdown-menu-end toolbar-acessibility p-2">
+      <li class="center-items py-2 text-secondary">
+        <strong>ACESSIBILIDADE</strong>
+      </li>
+      <li class="py-2 small">
+        <strong>Tamanho da Fonte</strong>
+      </li>
+      <div class="item d-inline-flex">
+        <a
+          class="btn btn-light text-secondary mx-1 fw-bold"
+          style="width: 2.688rem"
+          title="Diminuir Fonte"
+          (click)="setFontSize('a-')"
+          >A-</a
+        >
+        <fa-icon
+          class="btn btn-light text-secondary mx-1"
+          style="width: 2.688rem"
+          title="Tamanho original"
+          (click)="setFontSize('a')"
+          [icon]="faRotate"
+        ></fa-icon>
+        <a
+          class="btn btn-light text-secondary mx-1 fw-bold"
+          style="width: 2.688rem"
+          title="Aumentar fonte"
+          (click)="setFontSize('a+')"
+          >A+</a
+        >
+      </div>
+      <li class="py-2 small">
+        <strong>Controle de zoom</strong>
+      </li>
+      <div class="item">
+        <fa-icon
+          class="btn btn-light text-secondary mx-1 fw-bold"
+          style="width: 2.688rem"
+          title="Dinimuir Zoom"
+          (click)="setFontSize('a-')"
+          [icon]="faMagnifyingGlassMinus"
+        >
+        </fa-icon>
+
+        <fa-icon
+          class="btn btn-light text-secondary mx-1 fw-bold"
+          style="width: 2.688rem"
+          title="Tamanho Original"
+          (click)="setFontSize('a')"
+          [icon]="faRotate"
+        >
+        </fa-icon>
+        <fa-icon
+          class="btn btn-light text-secondary mx-1 fw-bold"
+          style="width: 2.688rem"
+          title="Aumentar Zoom"
+          (click)="setFontSize('a+')"
+          [icon]="faMagnifyingGlassPlus"
+        ></fa-icon>
+      </div>
+      <li class="py-2 small">
+        <strong>Contraste</strong>
+      </li>
+      <div class="item">
+        <fa-icon
+          class="btn btn-light text-secondary mx-1 fw-bold"
+          style="width: 2.688rem"
+          title="Alterar Contraste"
+          (click)="contraste()"
+          [icon]="faCircleHalfStroke"
+        ></fa-icon>
+      </div>
+    </ul>
+  </div>
+</div>
+<div
+  class="container-fluid h-100 m-0 p-0 d-flex align-items-center justify-content-center bg-login bg-secondary"
+>
+  <!-- <fa-icon [icon]="faUser" class="fa-2x p-2"></fa-icon> -->
+  <form (ngSubmit)="onSubmit(usuario)" class="form-signin">
+    <img class="d-block mb-4 mx-auto logo" src="assets/logo-tjro.png" alt="" />
+    <h1 class="h5 mb-3 font-weight-bold text-center text-white text-uppercase">
+      Sistema de Gestão de Certificados Digitais
+    </h1>
+    <div class="card p-3">
+      <label for="inputEmail" class="sr-only">Matrícula</label>
+      <div class="input-group input-group mb-3">
+        <input
+          type="text"
+          class="form-control bg-light border-end-0"
+          placeholder="Matrícula"
+          name="login"
+          [(ngModel)]="usuario.login"
+          required
+        />
+        <div class="input-group-text text-black-50 bg-light border-start-0">
+          <fa-icon class="small" [icon]="faUser"></fa-icon>
+        </div>
+      </div>
+      <label for="inputPassword" class="sr-only">Senha</label>
+      <div class="input-group input-group mb-3">
+        <input
+          type="password"
+          class="form-control bg-light border-end-0"
+          placeholder="Senha"
+          name="senha"
+          [(ngModel)]="usuario.senha"
+          required
+        />
+        <div class="input-group-text text-black-50 bg-light border-start-0">
+          <fa-icon class="small" [icon]="faKey"></fa-icon>
+        </div>
+      </div>
+      <div class="form-check mb-3">
+        <input
+          class="form-check-input pe-auto"
+          type="checkbox"
+          value=""
+          id="defaultCheck1"
+        />
+        <label class="form-check-label pe-auto" for="defaultCheck1">
+          Lembre-me
+        </label>
+      </div>
+      <button class="btn btn-success btn-block fw-bold" type="submit">
+        Entrar
+      </button>
+    </div>
+  </form>
+</div>

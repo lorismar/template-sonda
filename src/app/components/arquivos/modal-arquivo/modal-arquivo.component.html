@@ -1,0 +1,51 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">{{idArquivo ? 'Editar' : 'Adicionar'}} Arquivo</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+      <div class="form-group">
+          <label class="form-label">Tipo: <span class="text-danger">*</span></label>
+          <input 
+              class="form-control" 
+              type="text" 
+              [(ngModel)]="tipoDocumento" 
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="255"
+              autocomplete="false"
+              autofocus="true"
+              >
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data Assinatura Documento: <span class="text-danger">*</span></label>
+        <input 
+          class="form-control" 
+          [(ngModel)]="dataAssinaturaDocumento" 
+          type="date"
+          >
+      </div>
+      <div class="form-group">
+          <label class="form-label">Link do Arquivo SEI: <span class="text-danger">*</span></label>
+          <div class="position-relative">
+              <textarea 
+                class="form-control" 
+                id="link" 
+                name="link"
+                [(ngModel)]="pathArquivo" 
+                placeholder=""
+                autocomplete="off" 
+                ></textarea>
+            </div>
+            <small [ngClass]="{'text-danger': pathArquivo.length > 1000}">{{pathArquivo.length}}/1000</small>
+      </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="confirm()" 
+        [disabled]=" !pathArquivo || pathArquivo.length > 1000 || !tipoDocumento || tipoDocumento.length > 255 || loading || !dataAssinaturaDocumento">
+            Salvar
+        </button>
+  </div>
+  

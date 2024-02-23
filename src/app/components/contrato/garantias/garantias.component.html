@@ -1,0 +1,303 @@
+<div class="container">
+  <app-navegacao
+    [paginaAnterior]="'Home'"
+    [paginaAtual]="'Contrato'"
+    [proximaPagina]="'Cadastro'"
+  ></app-navegacao>
+  <app-stepper></app-stepper>
+
+  <div>
+    <div class="card m-3 shadow p-2">
+      <div
+        class="card-header bg-transparent text-secondary bg-white border-bottom-0"
+      >
+        <h6 class="card-title m-0 fw-bold">Cadastro de Garantias</h6>
+      </div>
+      <div class="card-body">
+        <div class="content">
+          <div class="row mt-2" [formGroup]="form">
+            <!-- 
+            <div class="col-lg-4 pe-md-0 mb-0 mb-md-3 mt-4 ">
+              <span class="alert alert-warning">Prazo da vigência da garantia:
+                {{ this.dataPrazoVigenciaGarantia | date : "dd/MM/yyyy"}}</span>
+            </div> -->
+
+            <div class="col-md-4 col-xl-2 mb-3">
+              <label>Garantia Contratual</label>
+              <div class="ms-2">
+                <div class="form-check form-check-inline me-4">
+                  <label class="form-check-label" for="garantia-contratual-sim"
+                    >Sim</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="garantia-contratual-sim"
+                    name="garantiaContratual"
+                    value="S"
+                    formControlName="garantiaContratual"
+                    (change)="garantia(true)"
+                  />
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="garantia-contratual-nao"
+                    >Não</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="garantia-contratual-nao"
+                    name="garantiaContratual"
+                    value="N"
+                    formControlName="garantiaContratual"
+                    (change)="garantia(false)"
+                  />
+                </div>
+              </div>
+              <span
+                class="badge bg-secondary"
+                style="transform: translateY(13px)"
+              >
+                Término da Vigência da Garantia Contratual:
+                {{ teminoVigenciaGarantia }}
+              </span>
+            </div>
+
+            <div class="col-md-8 col-xl-5 mb-3">
+              <label>Modalidade de Garantia:</label>
+              <select
+                class="form-select"
+                name="modalidadeGarantia"
+                formControlName="modalidadeGarantia"
+                [value]="garantias.modalidadeGarantia"
+              >
+                <option selected value="undefined">
+                  ------ Selecione ------
+                </option>
+                <option value="ESPECIE_OU_TITULO_DIVIDA_PUBLICA">
+                  Em espécie ou título da dívida pública
+                </option>
+                <option value="APOLICE">Apólice</option>
+                <option value="FIANCA_BANCARIA">Fiança bancária</option>
+              </select>
+            </div>
+
+            <div class="col-md-7 col-xl-5 mb-3">
+              <label>
+                Prazo de Garantia | Assistência Técnica | Licenças:</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  type="number"
+                  name="prazoGarantia"
+                  formControlName="prazoGarantia"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="4"
+                />
+
+                <select
+                  class="form-select ms-2"
+                  name="tipoPrazoGarantia"
+                  formControlName="tipoPrazoGarantia"
+                >
+                  <option selected value="undefined">
+                    ------ Selecione ------
+                  </option>
+                  <option value="DIAS">Dias</option>
+                  <option value="MESES">Meses</option>
+                  <option value="ANOS">Anos</option>
+                </select>
+              </div>
+              <span class="badge bg-secondary">
+                Prazo da vigência da garantia: {{ dataPrazoVigenciaGarantia }}
+              </span>
+            </div>
+
+            <div class="col-md-5 col-xl-4 mb-3">
+              <label>Percentual:</label>
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  type="number"
+                  name="percentual"
+                  formControlName="percentual"
+                  min="0"
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="4"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                />
+                <span class="input-group-text">%</span>
+              </div>
+              <span class="badge bg-secondary">
+                Valor: {{ form.value.valor | currency }}
+              </span>
+            </div>
+
+            <!-- <div class="col-lg-3 pe-md-0 mt-5">
+              <span class="alert alert-warning">Valor (R$):
+                {{ this.valorPercentual}}</span>
+            </div> -->
+
+            <div class="col-md-4 col-xl-3 mb-3">
+              <label>Prazo da garantia ajustável:</label>
+              <div class="ms-2">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="prazo-garantia-sim"
+                    >Sim</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="prazo-garantia-sim"
+                    name="prazoGarantiaAjustavel"
+                    value="S"
+                    formControlName="prazoGarantiaAjustavel"
+                    (change)="ajustavel(true)"
+                  />
+                </div>
+                <div class="form-check form-check-inline me-4">
+                  <label class="form-check-label" for="prazo-garantia-nao"
+                    >Não</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="prazo-garantia-nao"
+                    name="prazoGarantiaAjustavel"
+                    value="N"
+                    formControlName="prazoGarantiaAjustavel"
+                    (change)="ajustavel(false)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-8 col-xl-5 mb-3">
+              <label>Marco Inicial:</label>
+              <select
+                class="form-select"
+                name="marcoInicial"
+                formControlName="marcoInicial"
+                [value]="garantias.marcoInicial"
+              >
+                <option selected value="undefined">
+                  ------ Selecione ------
+                </option>
+                <option value="DATA_RECEBIMENTO_DEFINITIVO">
+                  Data do recebimento definitivo
+                </option>
+                <option value="ATIVACAO_LICENCA">Ativação da licença</option>
+                <option value="DATA_ASSINATURA_CONTRATO">Data de Assinatura do Contrato</option>
+              </select>
+              <span class="badge bg-secondary">
+                Vigência da Garantia ou Assistência Técnica:
+                {{ vigenciaDaGarantia }}
+              </span>
+            </div>
+
+            <div class="col-md-6 col-xl-4 mb-3">
+              <label>Prazo Apresentação de Garantia: (em dias úteis)</label>
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="prazoApresentacaoGarantia"
+                  name="prazoApresentacaoGarantia"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="4"
+                />
+              </div>
+              <span class="badge bg-secondary">
+                Data limite de apresentação: {{ dataLimiteApresenta }}
+              </span>
+            </div>
+
+            <!-- <div class="col-4">
+              <span class="alert alert-warning">Data limite de apresentação:
+                {{ this.dataLimiteApresenta | date : "dd/MM/yyyy"}}</span>
+            </div> -->
+
+            <div class="col-md-6 col-xl-3">
+              <label>Prorrogação Prazo de Apresentação:</label>
+              <div class="ms-2">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="prorrogacao-prazo-sim"
+                    >Sim</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="prorrogacao-prazo-sim"
+                    name="prazoProrrogacaoApresentacaoGarantia"
+                    value="S"
+                    formControlName="prazoProrrogacaoApresentacaoGarantia"
+                    (change)="prorrogacao(true)"
+                  />
+                </div>
+                <div class="form-check form-check-inline me-4">
+                  <label class="form-check-label" for="prorrogacao-prazo-nao"
+                    >Não</label
+                  >
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    id="prorrogacao-prazo-nao"
+                    name="prazoProrrogacaoApresentacaoGarantia"
+                    value="N"
+                    formControlName="prazoProrrogacaoApresentacaoGarantia"
+                    (change)="prorrogacao(false)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-5">
+              <label>Quantidade de Dias (úteis):</label>
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  type="number"
+                  name="quantidadeDiasUteisProrrogacao"
+                  formControlName="quantidadeDiasUteisProrrogacao"
+                  [value]="garantias.quantidadeDiasUteisProrrogacao"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="4"
+                />
+              </div>
+              <span class="badge bg-secondary">
+                Nova data limite: {{ novaDataLimites }}
+              </span>
+              <span class="badge bg-secondary mx-2">
+                Novo término da vigência: {{ novoTerminoVigencia }}
+              </span>
+            </div>
+
+            <!-- <div class="col-lg-3 pe-md-0 mb-0 mb-md-3 mt-4">
+              <span class="alert alert-warning">Nova data limite:
+                {{ this.novaDataLimites == undefined ? (this.dataLimiteApresenta | date : "dd/MM/yyyy") :
+                this.novaDataLimites | date : "dd/MM/yyyy"}}</span>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div
+        class="h-100 d-flex align-items-center justify-content-end mt-4 mx-3 mb-3"
+      >
+        <a
+          class="btn btn-light border mx-1"
+          [routerLink]="'/home/contrato/quadro-demonstrativo/' + idContrato"
+          >Voltar</a
+        >
+        <button (click)="salvar()" class="btn btn-primary mx-1">
+          Salvar e Avançar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

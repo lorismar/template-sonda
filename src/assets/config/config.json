@@ -1,0 +1,8 @@
+{
+  "baseUrl": "https://www.dev.tjro.jus.br/sgc-back",
+  "seoUrl": "https://seo.dev.tjro.jus.br/back",
+  "keycloakClientId": "sgc",
+  "keycloakUrl": "https://sso.hmg.tjro.jus.br/auth",
+  "keycloakRealm": "PJRO"
+
+}

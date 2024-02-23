@@ -1,0 +1,57 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração do Valor Contratual</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body row">
+    <div class="form-group col-6">
+        <label class="form-label">Número do Contrato:</label>
+        <input class="form-control" type="text" [value]="contrato.numeroContrato" readonly>
+    </div>
+    <div class="form-group col-6">
+        <label class="form-label">Ano do Contrato:</label>
+        <input class="form-control" type="text" [value]="contrato.anoContrato" readonly>
+    </div>
+    <div class="form-group col-6">
+        <label class="form-label">Valor Original do Contrato:</label>
+        <input class="form-control" type="text" [value]="contrato.valorTotal | currency" readonly currencyMask>
+    </div>
+    <div class="form-group col-6">
+        <label class="form-label">Valor do TA: <span class="text-danger">*</span></label>
+        <input 
+            class="form-control" 
+            id="valorTA" 
+            name="valorTA"
+            currencyMask
+            [(ngModel)]="valor"
+            (keyup)="calcPorcentagem()"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            maxlength="19"
+            />
+    </div>
+    <div class="form-group col-6">
+        <label class="form-label">Percentual Ajustado: <span class="text-danger">*</span></label>
+        <div class="input-group">
+            <input
+                class="form-control"
+                id="percentual"
+                name="percentual"
+                [(ngModel)]="percentual"
+                (keyup)="calcValor()"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                maxlength="4"
+                />
+            <span class="input-group-text">%</span>
+        </div>
+    </div>
+    <div class="form-group col-6">
+        <label class="form-label">Valor do Contrato Atualizado:</label>
+        <input class="form-control" type="text" [value]="valorReajustado | currency" currencyMask readonly>
+    </div>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="confirmSelection()">Salvar</button>
+  </div>
+  

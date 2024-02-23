@@ -1,0 +1,126 @@
+<div class="container">
+  <app-navegacao
+    [paginaAnterior]="'Home'"
+    [paginaAtual]="'Contrato'"
+    [proximaPagina]="'Cadastro'"
+  ></app-navegacao>
+  <app-stepper></app-stepper>
+
+  <div class="col-12 d-flex flex-column justify-content-end">
+    <div>
+      <div class="h-100 d-flex align-items-center justify-content-end me-3">
+        <button class="btn btn-secondary mx-1 position-relative">
+          <span style="font-weight: 500">Anexar arquivos</span>
+          <fa-icon [icon]="faFileUpload" class="ms-1"></fa-icon>
+          <input
+            class="form-control position-absolute opacity-0 top-0 mt-0 left-0 bottom-0"
+            type="file"
+            #fileImportInput
+            name="File Upload"
+            id="csvFileUpload"
+            (change)="fileUpload($event)"
+            accept="*/"
+            multiple
+            style="margin-top: 10px"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card m-3 p-2 shadow">
+    <div
+      class="card-header bg-transparent text-secondary bg-white border-bottom-0"
+    >
+      <h6 class="card-title m-0 fw-bold">Lista Arquivos</h6>
+    </div>
+    <div class="card-body arquivos">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table
+              *ngIf="formService.listaArquivos.length > 0"
+              class="table table-hover"
+              style="min-width: 1300px; width: 100%"
+            >
+              <thead class="bg-light">
+                <tr>
+                  <th width="225" scope="col">Nome</th>
+                  <th width="225" scope="col">Data</th>
+                  <th width="125" scope="col">Tamanho</th>
+                  <th width="300" scope="col">Usuário</th>
+                  <th width="200" scope="col">Unidade</th>
+                  <th
+                    width="110"
+                    class="fixed-right-column"
+                    scope="col"
+                    scope="col"
+                  >
+                    Ações
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let arquivo of formService.listaArquivos;
+                    let i = index
+                  "
+                >
+                  <td>{{ arquivo.nomeArquivo }}</td>
+                  <td>{{ arquivo.dataUpload | date : "dd/MM/yyy HH:mm" }}</td>
+                  <td>{{ arquivo.tamanho }} KB</td>
+                  <td>{{ arquivo.nomeUsuario }}</td>
+                  <td>{{ arquivo.unidade }}</td>
+                  <td class="fixed-right-column" scope="col">
+                    <button
+                      (click)="downloadArquivos(arquivo.idArquivo)"
+                      title="Baixar Arquivo"
+                      type="button"
+                      class="btn bg-transparent text-secondary"
+                    >
+                      <fa-icon [icon]="faFileDownload" class="fa-xl"></fa-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn bg-transparent text-secondary"
+                      title="Excluir Arquivo"
+                      id="meuBotao"
+                      (click)="excluir(arquivo.idArquivo)"
+                    >
+                      <fa-icon [icon]="faTrash" class="fa-xl"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="formService.listaArquivos.length == 0">
+              <span>Nenhum item cadastrado neste contrato!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div
+      class="h-100 d-flex align-items-center justify-content-end mt-4 px-3 mb-3"
+    >
+      <a
+        [routerLink]="'/home/contrato/empenho/' + idContrato"
+        class="btn btn-light border me-1"
+        >Voltar</a
+      >
+      <button
+        type="submit"
+        [routerLink]="'/home/contrato/finalizar-contrato/' + this.idContrato"
+        class="btn btn-primary"
+      >
+        Salvar e Avançar
+      </button>
+      <!-- <button class="btn btn-secondary btn-lg mx-1" (click)="cancelar()">Cancelar</button> -->
+    </div>
+  </div>
+  <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+</div>

@@ -1,0 +1,11 @@
+.actions {
+    overflow: visible;
+    &-buttons {
+        background-color: white;
+        width: max-content;
+        border-radius: 5px;
+        top: 0;
+        right: 30px;
+        transition: opacity 0.2s ease-in-out;
+    }
+}

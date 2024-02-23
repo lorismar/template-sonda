@@ -1,0 +1,50 @@
+
+  <div class="modal-content" id="modalContent">
+    <div class="modal-header border-bottom-0">
+      <h5 class="modal-title">Termo Aditivo</h5>
+      <button type="button" class="btn-close" *ngIf="this.termoAditivo.contrato" (click)="this.modal.close()"></button>
+      <button type="button" class="btn-close" *ngIf="!this.termoAditivo.contrato" [routerLink]="'/home/contrato/lista'" (click)="this.modal.close()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group mb-3">
+        <label for="numeroContrato" class="form-label">Nº do Contrato <span class="text-danger">*</span></label>
+        <div class="position-relative">
+          <input 
+            class="form-control" 
+            id="numeroContrato" 
+            name="numeroContrato"
+            (keydown)="buscarContratos($event)" 
+            (click)="search = !search"
+            [(ngModel)]="numeroContrato" 
+            [ngModelOptions]="{standalone: true}"
+            autocomplete="off" 
+            />
+            <div 
+              class="spinner-border spinner-border-sm text-info" 
+              role="status" 
+              *ngIf="loading" 
+              style="position: absolute; right: 10px; top: 10px;">
+              <span class="sr-only">Loading...</span>
+            </div>
+          <div *ngIf="search && contratos.length > 0" class="autocomplete">
+            <div *ngFor="let contrato of contratos" (click)="selecionarContrato(contrato)">
+              {{ contrato.numeroContrato + ' - ' + contrato.objeto.slice(0, 50) + (contrato.objeto.length > 49 ? '...' : '')}}
+            </div>
+          </div>
+          <div class="autocomplete" *ngIf="search && contratos.length === 0">
+            <div class="text-center">
+              Nenhum contrato encontrado.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer border-top-0">
+      <button *ngIf="this.termoAditivo.contrato" type="button" class="btn btn-light border" (click)="this.modal.close()">Cancelar</button>
+      <button *ngIf="!this.termoAditivo.contrato" type="button" class="btn btn-light border" [routerLink]="'/home/contrato/lista'" (click)="this.modal.close()">Fechar</button>
+      <button type="button" class="btn btn-primary" (click)="salvarContrato()">Continuar</button>
+    </div>
+  </div>
+
+
+

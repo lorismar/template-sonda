@@ -1,0 +1,61 @@
+
+<div class="modal-header border-bottom-0">
+<h5 class="modal-title">Ordem de Fornecimento: {{ data.idOrdemFornecimento }}</h5>
+<button type="button" class="btn-close" (click)="modal.close()"></button>
+</div>
+<div class="modal-body overflow-auto" id="copy">
+    <p><b>Ordem de Fornecimento: </b> {{ data.idOrdemFornecimento }}</p>
+    <p><b>Contrato: </b>{{ data.idContrato }}</p>
+    <p><b>Data de Cadastro: </b>{{ originalOF.dataCadastro | date : "dd/MM/yyy HH:mm:ss" }}</p>
+    <p><b>Status: </b>{{ originalOF.status }}</p>
+    <h6>Pacotes</h6>
+    <div *ngFor="let pacote of data.pacotes">
+        <table class="mb-2">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Endereço de Entrega</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ pacote.idPacoteOrdemFornecimento }}</td>
+                    <td>{{ pacote.enderecoEntrega.endereco }}, {{ pacote.enderecoEntrega.complemento }}, CEP: {{ pacote.enderecoEntrega.cep }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h6>Itens</h6>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Descrição</th>
+                    <th>Grupo</th>
+                    <th>Unidade</th>
+                    <th>Quantidade Original</th>
+                    <th>Saldo da Ata</th>
+                    <th>Quantidade Solicitada</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of pacote.itens">
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'item') }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'descricao') }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'grupo') }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'unidade') }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'quantidadeOriginal') }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'saldoItem') }}</td>
+                    <td>{{ item.quantidadeFornecimento }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'valorUnitario') | currency }}</td>
+                    <td>{{ getPropriedade(item.idItemQuadroDemons,'valorUnitario') * item.quantidadeFornecimento | currency }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="copyToClipboard()">Copiar</button>
+</div>

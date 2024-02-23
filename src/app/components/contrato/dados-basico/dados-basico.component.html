@@ -1,0 +1,656 @@
+<div class="container">
+  <app-navegacao
+    [paginaAnterior]="'Home'"
+    [paginaAtual]="'Contrato'"
+    [proximaPagina]="'Cadastro'"
+  ></app-navegacao>
+
+  <div>
+    <app-stepper></app-stepper>
+  </div>
+
+  <div [formGroup]="form">
+    <div class="card m-3 shadow p-2">
+      <div
+        class="card-header bg-transparent text-secondary bg-white border-bottom-0"
+      >
+        <h6 class="card-title m-0 fw-bold">Cadastro de Processos</h6>
+      </div>
+      <div class="card-body">
+        <div class="row" formArrayName="processos">
+          <div
+            class="col-sm-12 col-md-6 col-lg-4"
+            *ngFor="let processoForm of processos.controls; let i = index"
+          >
+            <div
+              class="card p-3 d-flex flex-collum mb-2"
+              [formGroup]="getProcessoForm(i)"
+            >
+              <div class="col-12 mb-2 d-flex flex-column justify-content-end">
+                <label>Nº Processo Administrativo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="numeroProcesso"
+                />
+              </div>
+              <div class="col-12 d-flex flex-column justify-content-end">
+                <label>Ano do Processo</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="anoProcesso"
+                    mask="0000"
+                  />
+                </div>
+              </div>
+              <div class="col-12 mt-4 d-flex flex-column justify-content-end">
+                <button
+                  *ngIf="!processoForm.value.idProcesso"
+                  class="btn btn-outline-danger"
+                  title="Remover Processo Administrativo"
+                  type="button"
+                  (click)="removeCampo(i)"
+                >
+                  Remover
+                </button>
+                <button
+                  *ngIf="processoForm.value.idProcesso"
+                  class="btn btn-outline-danger"
+                  title="Remover Processo Administrativo"
+                  type="button"
+                  (click)="deleteProcesso(i)"
+                >
+                  Remover
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col d-flex flex-collum justify-content-center justify-content-lg-start align-items-center"
+          >
+            <div class="py-sm-3 p-3">
+              <button
+                type="button"
+                class="btn btn-primary"
+                title="Adicionar Processo Administrativo"
+                (click)="AddCampos()"
+              >
+                <strong>+</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card m-3 shadow p-2">
+      <div
+        class="card-header bg-transparent text-secondary bg-white border-bottom-0"
+      >
+        <h6 class="card-title m-0 fw-bold">Cadastro de Dados Básicos</h6>
+      </div>
+      <div class="card-body">
+        <div class="content">
+          <div class="row mt-2">
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label
+                >Cód. Unidade Orçamentária(UO)
+                <span class="text-danger">*</span></label
+              >
+              <select
+                class="form-select"
+                name="codigoUnidadeOrcamentaria"
+                formControlName="codigoUnidadeOrcamentaria"
+                (change)="
+                  form.get('codigoUnidadeOrcamentaria')?.markAsTouched()
+                "
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('codigoUnidadeOrcamentaria')?.invalid &&
+                    form.get('codigoUnidadeOrcamentaria')?.touched,
+                  'is-valid':
+                    form.get('codigoUnidadeOrcamentaria')?.valid &&
+                    form.get('codigoUnidadeOrcamentaria')?.touched
+                }"
+              >
+                <option [value]="null" class="text-center">
+                  -- Selecione --
+                </option>
+                <option value="TJRO_00001">00001 - TJRO</option>
+                <option value="FUJU_03011">03011 - FUJU</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label>Nº Contrato</label>
+              <input
+                type="number"
+                class="form-control"
+                name="numeroContrato"
+                formControlName="numeroContrato"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+              />
+            </div>
+            <div class="col-md-6 col-lg-2 mb-2 d-flex flex-column justify-content-end">
+              <label>Ano do Contrato <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                name="anoContrato"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                maxlength="4"
+                formControlName="anoContrato"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                (keydown)="form.get('anoContrato')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('anoContrato')?.invalid &&
+                    form.get('anoContrato')?.touched,
+                  'is-valid':
+                    form.get('anoContrato')?.valid &&
+                    form.get('anoContrato')?.touched
+                }"
+              />
+            </div>
+            <div class="col-md-6 col-lg-4 mb-2">
+              <label for="aplicacao">Modalidade Licitação <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                name="modalidadeLicitacao"
+                formControlName="modalidadeLicitacao"
+                (change)="form.get('modalidadeLicitacao')?.markAsTouched()"
+                (change)="cleanModalidade($event)"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('modalidadeLicitacao')?.invalid &&
+                    form.get('modalidadeLicitacao')?.touched,
+                  'is-valid':
+                    form.get('modalidadeLicitacao')?.valid &&
+                    form.get('modalidadeLicitacao')?.touched
+                }"
+              >
+                <option [value]="null" class="text-center">
+                  -- Selecione --
+                </option>
+                <option value="CONCORRENCIA">Concorrência</option>
+                <option value="CONCURSO">Concurso</option>
+                <option value="CONVITE">Convite</option>
+                <option value="DIALOGO_COMPETITIVO">Diálogo competitivo</option>
+                <option value="LEILAO">Leilão</option>
+                <option value="PREGAO_ELETRONICO">Pregão Eletrônico</option>
+                <option value="PREGAO_PRESENCIAL">Pregão Presencial</option>
+                <option value="TOMADA_DE_PRECOS">Tomada de Preços</option>
+                <option value="DISPENSA">Dispensa</option>
+                <option value="INEXIGIBILIDADE">Inexigibilidade</option>
+                <option value="CREDENCIAMENTO">Credenciamento</option>
+              </select>
+              </div>                
+              <div class="col-md-12 mb-2 d-flex flex-column justify-content-end" 
+                *ngIf="form.get('modalidadeLicitacao')?.value === 'DISPENSA' || form.get('modalidadeLicitacao')?.value === 'INEXIGIBILIDADE'">
+                <label
+                >Fundamentação
+                </label>
+                <input 
+                class="form-control form-select" 
+                readonly="true"
+                id="fundamentoLicitacao" 
+                name="fundamentoLicitacao" 
+                autocomplete="off"
+                placeholder="-- Selecione --"
+                (click)="openFundamentos()"
+                [title]="form.get('fundamentoLicitacao')?.value ? form.get('fundamentoLicitacao')?.value.descricao : 'Selecione'"
+                [value]="form.get('fundamentoLicitacao')?.value ? form.get('fundamentoLicitacao')?.value.descricao : ''"
+              />
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label for="aplicacao">Adesão à ARP</label>
+              <div class="row">
+                <div class="ms-2">
+                  <div class="form-check form-check-inline me-4">
+                    <label class="form-check-label" for="adesao"
+                      >Sim</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="adesao"
+                      name="adesaoArp"
+                      value="S"
+                      formControlName="adesaoArp"
+
+                    />
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="contrato"
+                      >Não</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="contrato"
+                      name="adesaoArp"
+                      value="N"
+                      formControlName="adesaoArp"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+            class="col-md-6 col-lg-9 mb-2 d-flex flex-column justify-content-end"
+            *ngIf="this.form.value.adesaoArp === 'N'"
+             ></div>
+            <div
+              class="col-md-6 col-lg-3 mb-2 d-flex flex-column justify-content-end"
+              *ngIf="this.form.value.adesaoArp === 'S'"
+            >
+              <label for="razaoSocialFornecedor"
+                >Nº Ata de Registro de Preços <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="razaoSocialFornecedor"
+                formControlName="numeroAtaRegistroPrecos"
+                (keydown)="form.get('numeroAtaRegistroPrecos')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('numeroAtaRegistroPrecos')?.invalid &&
+                    form.get('numeroAtaRegistroPrecos')?.touched,
+                  'is-valid':
+                    form.get('numeroAtaRegistroPrecos')?.valid &&
+                    form.get('numeroAtaRegistroPrecos')?.touched
+                }"
+              />
+            </div>
+            <div
+            class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end"
+            *ngIf="this.form.value.adesaoArp === 'S'"
+            ></div>
+            <div class="col-md-6 col-lg-4 mb-2 position-relative d-flex flex-column justify-content-end">
+              <label>CPF/CNPJ  <span class="text-danger">*</span></label>
+              <input
+                readonly="true"
+                type="text"
+                class="form-control"
+                name="cpfCnpj"
+                formControlName="cpfCnpj"
+                (keydown)="form.get('cpfCnpj')?.markAsTouched()"
+                mask="000.000.000-00||00.000.000/0000-00"
+              />
+              <fa-icon class="ms-2 position-absolute" style="right: 25px; top: 25px; cursor: pointer;" [icon]="faSearch" (click)="pesquisarFornecedor()"></fa-icon>
+            </div>
+            <div class="col-md-6 col-lg-8 mb-2 d-flex flex-column justify-content-end">
+              <label for="razaoSocialFornecedor">Razão Social Fornecedor  <span class="text-danger">*</span></label>
+              <input
+                readonly="true"
+                type="text"
+                class="form-control"
+                name="razaoSocialFornecedor"
+                formControlName="razaoSocialFornecedor"
+                (keydown)="form.get('razaoSocialFornecedor')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('razaoSocialFornecedor')?.invalid &&
+                    form.get('razaoSocialFornecedor')?.touched,
+                  'is-valid':
+                    form.get('razaoSocialFornecedor')?.valid &&
+                    form.get('razaoSocialFornecedor')?.touched
+                }"
+              />
+            </div>
+            <!-- <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end">
+              <label>Valor Total do Contrato</label>
+              <input
+                currencyMask
+                class="form-control"
+                name="valorTotal"
+                maxlength="19"
+                formControlName="valorTotal"
+                (keydown)="form.get('valorTotal')?.markAsTouched()"
+                [disabled]="true"
+                placeholder="Total dos itens do Quadro Demonstrativo"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('valorTotal')?.invalid &&
+                    form.get('valorTotal')?.touched,
+                  'is-valid':
+                    form.get('valorTotal')?.valid &&
+                    form.get('valorTotal')?.touched
+                }"
+              />
+            </div> -->
+            <div class="col-md-6 col-lg-4 mb-2">
+              <label for="aplicacao">Tipo de Contratação <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                name="tipoContratacao"
+                formControlName="tipoContratacao"
+                (change)="form.get('tipoContratacao')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('tipoContratacao')?.invalid &&
+                    form.get('tipoContratacao')?.touched,
+                  'is-valid':
+                    form.get('tipoContratacao')?.valid &&
+                    form.get('tipoContratacao')?.touched
+                }"
+              >
+                <option [value]="null" class="text-center">
+                  -- Selecione --
+                </option>
+                <option value="AQUISICAO">Aquisição</option>
+                <option value="FORNECIMENTO">Fornecimento</option>
+                <option value="SERVICO">Serviço</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-2">
+              <label for="aplicacao">Tipo de Contrato</label>
+              <div class="row">
+                <div class="ms-2">
+                  <div class="form-check form-check-inline me-4">
+                    <label class="form-check-label" for="simplificado"
+                      >Simplificado</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="simplificado"
+                      name="tipoContrato"
+                      value="SIMPLIFICADO"
+                      formControlName="tipoContrato"
+                      (keydown)="form.get('tipoContrato')?.markAsTouched()"
+                      [ngClass]="{
+                        'is-invalid':
+                          form.get('tipoContrato')?.invalid &&
+                          form.get('tipoContrato')?.touched,
+                        'is-valid':
+                          form.get('tipoContrato')?.valid &&
+                          form.get('tipoContrato')?.touched
+                      }"
+                    />
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="contrato"
+                      >Contrato</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="contrato"
+                      name="tipoContrato"
+                      value="CONTRATO"
+                      formControlName="tipoContrato"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2">
+              <label for="aplicacao">Permite subcontratação?</label>
+              <div class="row">
+                <div class="ms-2">
+                  <div class="form-check form-check-inline me-4">
+                    <label
+                      class="form-check-label"
+                      for="permitirSubContratacao-sim"
+                      >Sim</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="permitirSubContratacao-sim"
+                      name="permitirSubContratacao"
+                      value="S"
+                      formControlName="permitirSubContratacao"
+                    />
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label
+                      class="form-check-label"
+                      for="permitirSubContratacao-nao"
+                      >Não</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="permitirSubContratacao-nao"
+                      name="permitirSubContratacao"
+                      value="N"
+                      formControlName="permitirSubContratacao"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-2 d-flex flex-column justify-content-end">
+              <label for="objeto">Objeto <span class="text-danger">*</span></label>
+              <textarea
+                rows="4"
+                type="text"
+                class="form-control"
+                name="objeto"
+                formControlName="objeto"
+                (keydown)="form.get('objeto')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('objeto')?.invalid && form.get('objeto')?.touched,
+                  'is-valid':
+                    form.get('objeto')?.valid && form.get('objeto')?.touched
+                }"
+              ></textarea>
+            </div>
+            <div class="col-md-6 mb-2 d-flex flex-column justify-content-end">
+              <label>Informações Complementares <span class="text-danger">*</span></label>
+              <textarea
+                rows="4"
+                type="text"
+                class="form-control"
+                name="infoComplementar"
+                formControlName="infoComplementar"
+                (keydown)="form.get('infoComplementar')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('objeto')?.invalid && form.get('objeto')?.touched
+                }"
+              ></textarea>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-2 d-flex flex-column justify-content-end">
+              <label for="aplicacao">Há correção?</label>
+              <div class="row">
+                <div class="ms-2">
+                  <div class="form-check form-check-inline me-4">
+                    <label class="form-check-label" for="correcao"
+                      >Sim</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="correcao"
+                      name="correcao"
+                      value="S"
+                      formControlName="correcao"
+
+                    />
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="correcao"
+                      >Não</label
+                    >
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      id="correcao"
+                      name="correcao"
+                      value="N"
+                      formControlName="correcao"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+            class="col-md-6 col-lg-9 mb-2 d-flex flex-column justify-content-end"
+            *ngIf="this.form.value.correcao === 'N'"
+             ></div>
+            <div class="col-md-6 col-lg-5 mb-2 d-flex flex-column justify-content-end" *ngIf="this.form.value.correcao === 'S'">
+              <label>Mês Índice de Correção <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                name="mesIndiceCorrecao"
+                formControlName="mesIndiceCorrecao"
+                (change)="form.get('mesIndiceCorrecao')?.markAsTouched()"
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('mesIndiceCorrecao')?.invalid &&
+                    form.get('mesIndiceCorrecao')?.touched,
+                  'is-valid':
+                    form.get('mesIndiceCorrecao')?.valid &&
+                    form.get('mesIndiceCorrecao')?.touched
+                }"
+              >
+                <option value="" class="text-center">-- Selecione --</option>
+                <option value="JANEIRO">Janeiro</option>
+                <option value="FEVEREIRO">Fevereiro</option>
+                <option value="MARCO">Março</option>
+                <option value="ABRIL">Abril</option>
+                <option value="MAIO">Maio</option>
+                <option value="JUNHO">Junho</option>
+                <option value="JULHO">Julho</option>
+                <option value="AGOSTO">Agosto</option>
+                <option value="SETEMBRO">Setembro</option>
+                <option value="OUTUBRO">Outubro</option>
+                <option value="NOVEMBRO">Novembro</option>
+                <option value="DEZEMBRO">Dezembro</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end" *ngIf="this.form.value.correcao === 'S'">
+              <label for="aplicacao">Índice de Correção <span class="text-danger">*</span></label>
+              <div class="position-relative">
+                <input 
+                  class="form-select" 
+                  name="indiceCorrecao"
+                  placeholder="Pesquisar..."
+                  formControlName="indiceCorrecao"
+                  (keydown)="buscarIndices($event)" 
+                  (click)="search = !search"
+                  autocomplete="off" 
+                  (change)="form.get('idIndiceCorrecao')?.markAsTouched()"
+                  [ngClass]="{
+                    'is-invalid':
+                      form.get('idIndiceCorrecao')?.invalid &&
+                      form.get('idIndiceCorrecao')?.touched,
+                    'is-valid':
+                      form.get('idIndiceCorrecao')?.valid &&
+                      form.get('idIndiceCorrecao')?.touched
+                  }"
+                  />
+                  <div 
+                    class="spinner-border spinner-border-sm text-info" 
+                    role="status" 
+                    *ngIf="loading" 
+                    style="position: absolute; right: 10px; top: 10px;">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                <div *ngIf="search && indices.length > 0" class="autocomplete">
+                  <div *ngFor="let indice of indices" (click)="selecionarIndice(indice)">
+                    {{ indice.nome + ' - ' + indice.codigo.slice(0, 50) + (indice.codigo.length > 49 ? '...' : '')}}
+                  </div>
+                </div>
+                <div class="autocomplete" *ngIf="search && indices.length === 0">
+                  <div class="text-center">
+                    Nenhum indice de correção encontrado.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end">
+              <label>Data de Publicação do Contrato</label>
+              <input
+                type="date"
+                class="form-control"
+                name="dataPublicacaoContrato"
+                formControlName="dataPublicacaoContrato"
+                max="9999-12-31"
+              />
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end">
+              <label>Local de Publicação do Contrato</label>
+              <input
+                type="text"
+                class="form-control"
+                name="localPublicacaoContrato"
+                formControlName="localPublicacaoContrato"
+              />
+            </div>
+            <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end">
+              <label>Nº do Instrumento Convocatário</label>
+              <input
+                type="number"
+                class="form-control"
+                name="numeroInstrumentoConvocatorio"
+                formControlName="numeroInstrumentoConvocatorio"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                maxlength="255"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+              />
+            </div>
+            <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end">
+              <label>Ano do Instrumento Convocatório</label>
+              <input
+                type="number"
+                class="form-control"
+                name="anoInstrumentoConvocatorio"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                maxlength="4"
+                formControlName="anoInstrumentoConvocatorio"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+              />
+            </div>
+            <div class="col-md-6 col-lg-4 mb-2 d-flex flex-column justify-content-end">
+              <label
+                >Tipo do Instrumento Convocatório
+                <span class="text-danger">*</span></label
+              >
+              <select
+                class="form-select"
+                name="tipoInstrumentoConvocatorio"
+                formControlName="tipoInstrumentoConvocatorio"
+                (change)="
+                  form.get('tipoInstrumentoConvocatorio')?.markAsTouched()
+                "
+                [ngClass]="{
+                  'is-invalid':
+                    form.get('tipoInstrumentoConvocatorio')?.invalid &&
+                    form.get('tipoInstrumentoConvocatorio')?.touched,
+                  'is-valid':
+                    form.get('tipoInstrumentoConvocatorio')?.valid &&
+                    form.get('tipoInstrumentoConvocatorio')?.touched
+                }"
+              >
+                <option [value]="null" class="text-center">
+                  -- Selecione --
+                </option>
+                <option value="EDITAL">Edital</option>
+                <option value="EDITAL_RDC">Edital RDC</option>
+                <option value="CHAMDO_PUBLICO">Chamamento Público</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div
+        class="h-100 d-flex align-items-center justify-content-end mt-2 mb-2 p-2"
+      >
+        <!-- <a class="btn btn-light border btn-lg mx-1 disabled">Etapa Anterior</a> -->
+        <button class="btn btn-primary mx-1" (click)="salvar()">
+          Salvar e Avançar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+.link {
+    border: 1px solid grey;
+    padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+    border-radius: 5px;        
+    text-decoration: none!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100px;
+    color: black;
+    &:link { 
+        text-decoration: none; 
+      } 
+    &:visited { 
+        text-decoration: none; 
+      } 
+    &:hover { 
+        text-decoration: none; 
+        background-color: #46B4E8;
+        color: white;
+      } 
+    &:active { 
+        text-decoration: none; 
+      }
+ 
+    span {
+        font-size: 0.8rem;
+        text-decoration: none;
+        margin-right: 0.5rem;
+    }
+}

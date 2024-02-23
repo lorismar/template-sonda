@@ -1,0 +1,158 @@
+<app-navegacao
+  [paginaAnterior]="'Home'"
+  [paginaAtual]="'Arquivos'"
+></app-navegacao>
+<div class="container-fluid">
+  <div class="d-flex align-items-center justify-content-between my-3" 
+    [appHasPermission]="['SGC-Cadastrar_IndiceCorrecao']">
+    <span class="fw-bold">Contrato: {{this.idContrato ? this.idContrato : ''}}</span>
+    <button
+      class="btn btn-primary"
+      (click)="incluirArquivo()"
+    >
+      Incluir Arquivo <fa-icon class="ms-2" [icon]="faPlus"></fa-icon>
+  </button>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="accordion mb-3 shadow position-relative">
+        <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+        <div class="card rounded shadow-sm">
+          <div class="d-flex m-3">
+            <h6 class="h6 fw-bold">Lista Arquivos</h6>
+          </div>
+          <div class="card-body show">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table
+                    class="table table-hover"
+                    style="min-width: 530px; width: 100%;"
+                    *ngIf="arquivos.length > 0"
+                  >
+                    <thead class="bg-light">
+                      <tr>
+                        <th
+                          (click)="filtroLista('tipoDocumento')"
+                          [class.desc]="
+                            sort === 'tipoDocumento' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'tipoDocumento' && direction === 'asc'
+                          "
+                          width="200"
+                        >
+                          Tipo de Documento
+                        </th>
+                        <th
+                          (click)="filtroLista('dataUpload')"
+                          [class.desc]="
+                            sort === 'dataUpload' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'dataUpload' && direction === 'asc'
+                          "
+                          width="80"
+                        >
+                          Data
+                        </th>
+                        <th
+                          (click)="filtroLista('nomeUsuario')"
+                          [class.desc]="
+                            sort === 'nomeUsuario' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'nomeUsuario' && direction === 'asc'
+                          "
+                          width="200"
+                        >
+                          Nome do Usuário
+                        </th>
+                        <!-- <th
+                          (click)="filtroLista('unidade')"
+                          [class.desc]="
+                            sort === 'unidade' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'unidade' && direction === 'asc'
+                          "
+                          width="200"
+                        >
+                          Unidade
+                        </th> -->
+                        <th
+                          (click)="filtroLista('pathArquivo')"
+                          [class.desc]="
+                            sort === 'pathArquivo' && direction === 'desc'
+                          "
+                          [class.asc]="sort === 'pathArquivo' && direction === 'asc'"
+                          width="200"
+                        >
+                            Link do Arquivo SEI
+                        </th>
+                        <th class="text-end fixed-right-column" width="100">
+                          Ações
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tbody>
+                      <ng-container *ngFor="let arquivo of arquivos">
+                        <tr>
+                          <td width="80">{{ arquivo.tipoDocumento }}</td>
+                          <td width="80">{{ arquivo.dataUpload | date: 'dd/MM/YYYY' }}</td>
+                          <td width="100">{{ arquivo.nomeUsuario }}</td>
+                          <!-- <td width="100">{{ arquivo.unidade }}</td> -->
+                          <td width="100">
+                            <a [href]="arquivo.pathArquivo" class="link" target="_blank">
+                                <span>Arquivo</span>
+                                <img src="assets/sei.png" alt="" width="20px">
+                            </a>
+                           </td>
+                          <td
+                            class="text-end fixed-right-column"
+                            width="100">
+                            <button
+                                [appHasPermission]="['SGC-Editar_IndiceCorrecao']"
+                                type="button"
+                                class="btn bg-transparent text-secondary"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Editar"
+                                data-bs-title="Editar"
+                                (click)="editarArquivo(arquivo)"
+                            >
+                              <fa-icon [icon]="faPenToSquare"></fa-icon>
+                            </button>
+                            <button
+                                [appHasPermission]="['SGC-Editar_IndiceCorrecao']"
+                                type="button"
+                                class="btn bg-transparent text-secondary"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Excluir"
+                                data-bs-title="Excluir"
+                                (click)="excluirArquivo(arquivo.idArquivo)"
+                          >
+                            <fa-icon [icon]="faTrashAlt"></fa-icon>
+                          </button>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                  <span *ngIf="arquivos.length === 0">Nenhum arquivo encontrado!</span>
+                  <div
+                    class="text-center"
+                    style="position: sticky; left: 0; right: 0; z-index: 1"
+                  >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

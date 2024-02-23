@@ -1,0 +1,76 @@
+<div class="modal-content" id="modalContent">
+    <div class="modal-header border-bottom-0 border-bottom-0">
+        <h5 class="modal-title">{{title}}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="activeModal.close()"
+        ></button>
+      </div>
+    <div class="modal-body">
+      <div class="form-group mb-3">
+        <label for="numeroContrato" class="form-label">Pesquisar</label>
+        <div class="position-relative">
+          <input 
+            class="form-control mb-3" 
+            id="numeroContrato" 
+            name="numeroContrato"
+            (keydown)="callPesquisar()" 
+            [(ngModel)]="nome" 
+            [ngModelOptions]="{standalone: true}"
+            autocomplete="off" 
+            />
+            <div 
+              class="spinner-border spinner-border-sm text-info" 
+              role="status" 
+              *ngIf="loading" 
+              style="position: absolute; right: 10px; top: 10px;">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div class="table-responsive tabela" *ngIf="options.length > 0">
+                <table class="table table-hover position-relative" style="min-width: 500px" >
+                  <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+                  <tbody>
+                    <tr
+                      style="cursor: pointer;"
+                      *ngFor="
+                        let option of filtered
+                          | paginate
+                            : {
+                                itemsPerPage: 10,
+                                currentPage: page,
+                                totalItems: total
+                              }
+                      "
+                      data-bs-dismiss="modal"
+                      (click)="selecionarItem(option)"
+                    >
+                      <td>{{ option.descricao }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- <div
+                  class="text-center"
+                  style="position: sticky; left: 0; right: 0; z-index: 1"
+                >
+                  <pagination-controls
+                    (pageChange)="getList($event)"
+                    previousLabel="Anterior"
+                    nextLabel="Próximo"
+                  ></pagination-controls>
+                </div> -->
+                <div *ngIf="filtered.length === 0">
+                    <div class="text-center">
+                      Nenhum fundamento encontrado.
+                    </div>
+                  </div>
+              </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="modal-footer border-top-0">
+      <button *ngIf="this.idContrato" type="button" class="btn btn-secondary" (click)="this.modal.close()">Cancelar</button>
+      <button *ngIf="!this.idContrato" type="button" class="btn btn-secondary" [routerLink]="'/home/contrato/lista'" (click)="this.modal.close()">Fechar</button>
+      <button type="button" class="btn btn-primary" (click)="salvarContrato()">Continuar</button>
+    </div> -->
+  </div>

@@ -1,0 +1,11 @@
+{
+    "/seo": {
+      "target": "https://seo.dev.tjro.jus.br/back",
+      "secure": false,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/seo": ""
+      }
+    }
+  }
+  

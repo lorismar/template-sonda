@@ -1,0 +1,103 @@
+
+<div class="modal-content">
+  <div class="modal-header border-bottom-0 border-bottom-0">
+    <h5 class="modal-title">Buscar Fornecedor</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="activeModal.close()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="getList(1)">
+      <div class="row mb-3">
+        <div class="col-md-4 mb-3">
+          <label for="razaoSocial" class="form-label"
+            >Nome ou Razão Social</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="razaoSocial"
+            name="razaoSocial"
+            formControlName="razaoSocial"
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="cpfCnpj" class="form-label">CPF ou CNPJ</label>
+          <input
+            type="text"
+            [mask]="'CPF_CNPJ'"
+            class="form-control"
+            id="cpfCnpj"
+            name="cpfCnpj"
+            formControlName="cpfCnpj"
+          />
+        </div>
+        <div class="col d-flex align-items-end mb-3">
+          <button
+            type="button"
+            class="btn btn-light border"
+            (click)="limparPesquisa()"
+          >
+            Limpar
+          </button>
+          <button type="submit" class="btn btn-primary ms-4 fw-bold w-100" [disabled]="loading">
+            <span>Pesquisar</span>
+            <fa-icon *ngIf="!loading" [icon]="faSearch" class="ms-2"></fa-icon>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+            <span class="visually-hidden">Pesquisando...</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="table-responsive max-height" *ngIf="listaFornecedores.length > 0">
+      <table class="table table-hover position-relative" style="min-width: 500px" >
+        <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+        <thead>
+          <tr>
+            <th class="fixed-left-column">CPF/CNPJ</th>
+            <th>Nome/Razão Social</th>
+            <th>Telefone</th>
+            <th>Contato</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            style="cursor: pointer;"
+            *ngFor="
+              let fornecedor of listaFornecedores
+                | paginate
+                  : {
+                      itemsPerPage: 10,
+                      currentPage: page,
+                      totalItems: total
+                    }
+            "
+            data-bs-dismiss="modal"
+            (click)="selecionarItem(fornecedor)"
+          >
+            <td width="120" class="fixed-left-column">
+              {{ utils.formatarCPFCNPJ(fornecedor.cpfCnpj) }}
+            </td>
+            <td width="150">{{ fornecedor.razaoSocial }}</td>
+            <td width="100">
+              {{ utils.formatarTelefone(fornecedor.telefone1) }}
+            </td>
+            <td width="100">{{ fornecedor.contato }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        class="text-center"
+        style="position: sticky; left: 0; right: 0; z-index: 1"
+      >
+        <pagination-controls
+          (pageChange)="getList($event)"
+          previousLabel="Anterior"
+          nextLabel="Próximo"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

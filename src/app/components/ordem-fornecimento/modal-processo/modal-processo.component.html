@@ -1,0 +1,14 @@
+<div class="modal-header border-bottom-0">
+    <h4 class="modal-title">Selecione um Processo</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <select class="form-select" [(ngModel)]="selectedProcesso" placeholder="Selecione um Processo">
+      <option *ngFor="let processo of processos" [value]="processo.numeroProcesso">{{ processo.numeroProcesso }}</option>
+    </select>
+  </div>
+  <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="confirmSelection()">Selecionar</button>
+  </div>
+  

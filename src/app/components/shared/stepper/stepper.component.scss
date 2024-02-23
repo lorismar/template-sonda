@@ -1,0 +1,114 @@
+.stepper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .stepper-item{
+      cursor: pointer;
+      width: 136px;
+      height: 126px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      position: relative;
+      justify-content: center;
+      min-width: 108px;
+      &:first-child{
+        &::before{
+          visibility: hidden;
+        }
+      }
+      &:last-child{
+        &::after{
+          visibility: hidden;
+        }
+      }
+      &.active{
+        &::before,
+        &::after{
+          background-color: var(--bs-primary);
+        }      
+        .circle{
+          background-color: var(--bs-white) !important;
+          border-color: var(--bs-primary) !important;
+          i{
+            color: var(--bs-primary) !important;
+          }
+        }
+      }
+      &.completed{
+        &::before,
+        &::after{
+          background-color: var(--bs-primary);
+        }
+        .circle{
+          background-color: var(--bs-primary);
+          border-color: var(--bs-primary);
+          i{
+            color: var(--bs-white);
+          }
+        }
+        
+      }
+      &::before{
+        content: '';
+        display: block;
+        width: 50%;
+        height: 4px;
+        background-color: #DADADA;
+        position: absolute;
+        left: 0;
+        top: 32px;
+        z-index: 1;
+      }
+      &::after{
+        content: '';
+        display: block;
+        width: 50%;
+        height: 4px;
+        background-color: #DADADA;
+        position: absolute;
+        right: 0;
+        top: 32px;
+        z-index: 1;
+      }
+      .circle{
+        width: 54px;
+        height: 54px;
+        background-color: #DADADA;
+        border-radius: 500px;
+        border-width: 3px;
+        border-color: #DADADA;
+        border-style: solid;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        i{
+          color: #DADADA;
+          border-radius: 100px;
+          width: 20px;
+          height: 20px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1;
+        }
+      }
+      span{
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: .75rem !important;
+        font-weight: bold;
+        height: 48px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 1202px){
+    .stepper{
+      justify-content: start !important;
+    }
+  }

@@ -1,0 +1,26 @@
+[
+    {
+        "id": "P",
+        "descricao": "PARADA NÃO PROGRAMADA"
+    },
+    {
+        "id": "FI",
+        "descricao": "FALHA INESPERADA"
+    },
+    {
+        "id": "A",
+        "descricao": "AVISO"
+    },
+    {
+        "id": "V",
+        "descricao": "NOVA VERSÃO"
+    },
+    {
+        "id": "MP",
+        "descricao": "MANUTENÇÃO PROGRAMADA"
+    },
+    {
+        "id": "PP",
+        "descricao": "PARADA PROGRAMADA"
+    }
+]

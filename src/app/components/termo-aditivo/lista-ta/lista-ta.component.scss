@@ -1,0 +1,29 @@
+table {
+    th {
+      position: relative;
+      cursor: pointer;
+  
+      &.asc::after,
+      &.desc::after {
+        content: "";
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+  
+      &.asc::after {
+        border-bottom: 6px solid black;
+      }
+  
+      &.desc::after {
+        border-top: 6px solid black;
+      }
+    }
+  }
+  

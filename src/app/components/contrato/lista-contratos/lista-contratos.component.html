@@ -1,0 +1,488 @@
+<app-navegacao
+  [paginaAnterior]="'Home'"
+  [paginaAtual]="'Contratos'"
+></app-navegacao>
+<div class="container-fluid">
+  <div class="d-flex align-items-center justify-content-end my-3" [appHasPermission]="['SGC-Cadastrar_Contrato']">
+    <!-- <a
+      href="\home/termo-aditivo/dados-basicos/novo"
+      class="btn btn-primary m-2"
+      (click)="limparCacheIdContrato()"
+    >
+      Cadastrar Termo Aditivo <fa-icon class="ms-2" [icon]="faPlus"></fa-icon>
+    </a> -->
+    <a
+      class="btn btn-primary"
+      (click)="limparCacheIdContrato()"
+    >
+      Cadastrar Contrato <fa-icon class="ms-2" [icon]="faPlus"></fa-icon>
+    </a>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="accordion mb-3 shadow" id="accordionFilter">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="filtroContrato">
+            <button
+              class="accordion-button text-secondary fw-bold"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#divPesquisa"
+              aria-expanded="true"
+              aria-controls="divPesquisa"
+            >
+              Filtros
+            </button>
+          </h2>
+          <div
+            id="divPesquisa"
+            class="accordion-collapse collapse show"
+            aria-labelledby="filtroContrato"
+            data-bs-parent="#accordionFilter"
+          >
+            <div class="accordion-body">
+              <form #filtroForm="ngForm" (ngSubmit)="pesquisarContratos()">
+                <div class="row mb-3">
+                  <div class="col-sm-6 col-md-3 col-lg-2">
+                    <label for="numProcesso" class="form-label mb-0"
+                      >Nº Processo:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="numProcesso"
+                      name="numProcesso"
+                      [(ngModel)]="numeroProcesso"
+                    />
+                  </div>
+                  <div class="col-sm-6 col-md-3 col-lg-2">
+                    <label for="numeroContrato" class="form-label mb-0"
+                      >Nº Contrato:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="numeroContrato"
+                      name="numeroContrato"
+                      [(ngModel)]="numeroContrato"
+                    />
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <label for="nomeFornecedor" class="form-label mb-0"
+                      >Fornecedor:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nomeFornecedor"
+                      name="nomeFornecedor"
+                      [(ngModel)]="nomeFornecedor"
+                    />
+                  </div>
+                  <div class="col-md-12 col-lg-4">
+                    <label for="objeto" class="form-label mb-0">Objeto:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="objeto"
+                      name="objeto"
+                      [(ngModel)]="objeto"
+                    />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-12 col-lg-2">
+                    <label for="tipoContrato" class="form-label mb-0"
+                      >Tipo de Contrato:</label
+                    >
+                    <select
+                      class="form-select"
+                      id="tipoContrato"
+                      name="tipoContrato"
+                      [(ngModel)]="tipoContrato"
+                    >
+                      <option value="">Selecione</option>
+                      <option value="AQUISICAO">Aquisição</option>
+                      <option value="FORNECIMENTO">Fornecimento</option>
+                      <option value="SERVICO">Serviços</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12 col-lg-2">
+                    <label for="unidade" class="form-label mb-0"
+                      >Unidade:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="unidade"
+                      name="unidade"
+                      [(ngModel)]="unidade"
+                    />
+                  </div>
+                  <div class="col-md-12 col-lg-2">
+                    <label for="ta" class="form-label mb-0"
+                      >Termo Aditivo:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ta"
+                      name="ta"
+                      [(ngModel)]="ta"
+                    />
+                  </div>
+                  <div class="col-md-12 col-lg-2">
+                    <label for="ap" class="form-label mb-0"
+                      >Apostilamento:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ap"
+                      name="ap"
+                      [(ngModel)]="ap"
+                    />
+                  </div>
+                  <div class="col-md-12 col-lg-4">
+                    <label for="nomeGestor" class="form-label mb-0"
+                      >Nome do Gestor:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="nomeGestor"
+                      name="nomeGestor"
+                    />
+                  </div>
+                  <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 d-flex justify-content-end mt-3">
+                    <button
+                      type="button"
+                      class="btn btn-light border btn-block ms-2"
+                      (click)="limparPesquisa()"
+                    >
+                      Limpar Pesquisa
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-block ms-3"
+                    >
+                      Pesquisar
+                      <fa-icon class="ms-2" [icon]="faSearch"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion mb-3 shadow position-relative">
+        <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+        <div class="card rounded shadow-sm">
+          <div class="d-flex m-3">
+            <h6 class="h6 fw-bold">Lista de Contratos</h6>
+          </div>
+          <div class="card-body show">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table
+                    class="table table-hover"
+                    style="min-width: 1650px; width: 100%;"
+                  >
+                    <thead class="bg-light">
+                      <tr>
+                        <th
+                          (click)="filtroLista('processos')"
+                          [class.desc]="
+                            sort === 'processos' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'processos' && direction === 'asc'
+                          "
+                          width="150"
+                        >
+                          Nº Processo
+                        </th>
+                        <th
+                          (click)="filtroLista('numeroContrato')"
+                          [class.desc]="
+                            sort === 'numeroContrato' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'numeroContrato' && direction === 'asc'
+                          "
+                          width="150"
+                        >
+                          Nº Contrato
+                        </th>
+                        <th
+                          (click)="filtroLista('anoContrato')"
+                          [class.desc]="
+                            sort === 'anoContrato' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'anoContrato' && direction === 'asc'
+                          "
+                          width="150"
+                        >
+                          Ano do Contrato
+                        </th>
+                        <th
+                          (click)="filtroLista('nomeFornecedor')"
+                          [class.desc]="
+                            sort === 'nomeFornecedor' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'nomeFornecedor' && direction === 'asc'
+                          "
+                          width="150"
+                        >
+                          Fornecedor
+                        </th>
+                        <th
+                          (click)="filtroLista('objeto')"
+                          [class.desc]="
+                            sort === 'objeto' && direction === 'desc'
+                          "
+                          [class.asc]="sort === 'objeto' && direction === 'asc'"
+                          width="200"
+                        >
+                          Objeto
+                        </th>
+                        <th
+                          (click)="filtroLista('dataInicioVigencia')"
+                          [class.desc]="
+                            sort === 'dataInicioVigencia' &&
+                            direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'dataInicioVigencia' && direction === 'asc'
+                          "
+                          class="text-center"
+                          width="150"
+                        >
+                          Inicio da vigência
+                        </th>
+                        <th
+                          (click)="filtroLista('dataFimVigencia')"
+                          [class.desc]="
+                            sort === 'dataFimVigencia' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'dataFimVigencia' && direction === 'asc'
+                          "
+                          class="text-center"
+                          width="150"
+                        >
+                          Fim da vigência
+                        </th>
+                        <th
+                          (click)="filtroLista('nomeGestor')"
+                          [class.desc]="
+                            sort === 'nomeGestor' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'nomeGestor' && direction === 'asc'
+                          "
+                          width="250"
+                        >
+                          Gestor
+                        </th>
+                        <th
+                          (click)="filtroLista('valorTotal')"
+                          [class.desc]="
+                            sort === 'valorTotal' && direction === 'desc'
+                          "
+                          [class.asc]="
+                            sort === 'valorTotal' && direction === 'asc'
+                          "
+                          class="text-end"
+                          width="150"
+                        >
+                          Valor do Contrato
+                        </th>
+                        <th
+                          (click)="filtroLista('status')"
+                          [class.desc]="
+                            sort === 'status' && direction === 'desc'
+                          "
+                          [class.asc]="sort === 'status' && direction === 'asc'"
+                          class="text-center"
+                          width="80"
+                        >
+                          Status
+                        </th>
+                        <th class="text-end fixed-right-column" width="60">
+                          Ações
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tbody>
+                      <ng-container
+                        *ngFor="
+                          let contrato of contratos
+                            | paginate
+                              : {
+                                  itemsPerPage: 5,
+                                  currentPage: page,
+                                  totalItems: totalElements
+                                }
+                        "
+                      >
+                        <tr>
+                          <td style="max-width: 150px;">{{ contrato.processos }}</td>
+                          <td>{{ contrato.numeroContrato }}</td>
+                          <td>{{ contrato.anoContrato }}</td>
+                          <td [title]="nomeFornecedor" >
+                            {{ 
+                              (contrato.nomeFornecedor && contrato.nomeFornecedor.length > 15)
+                              ? contrato.nomeFornecedor.substring(0, 15) + "..."
+                              : contrato.nomeFornecedor
+                            }}
+                          </td>
+                          <td>
+                            {{
+                              contrato.objeto.length > 50
+                                ? contrato.objeto.substring(0, 50) + "..."
+                                : contrato.objeto
+                            }}
+                          </td>
+                          <td class="text-center">
+                            {{
+                              contrato.dataInicioVigencia | date : "dd/MM/yyy"
+                            }}
+                          </td>
+                          <td class="text-center">
+                            {{ contrato.dataFimVigencia | date : "dd/MM/yyy" }}
+                          </td>
+                          <td>{{ contrato.nomeGestor }}</td>
+                          <td class="text-end">
+                            {{ contrato.valorTotal | currency : "BRL" }}
+                          </td>
+                          <td class="text-center pt-3" width="80">
+                            <ng-container
+                              *ngIf="contrato.status === 'EM_ABERTO'"
+                            >
+                              <fa-icon
+                                [icon]="faCircleXmark"
+                                class="fa-xl text-danger"
+                              ></fa-icon>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="contrato.status === 'ASSINADO'"
+                            >
+                              <fa-icon
+                                [icon]="faCheckCircle"
+                                class="fa-xl text-success"
+                              ></fa-icon>
+                            </ng-container>
+                          </td>
+                          <td
+                            class="text-end fixed-right-column">
+                              <app-actions>
+                                <button
+                                  [appHasPermission]="['SGC-Visualizar_Contrato']"
+                                  type="button"
+                                  class="btn bg-transparent text-secondary"
+                                  title="Arquivos"
+                                  [routerLink]="[
+                                  '/home/arquivos',
+                                  contrato.idContrato
+                                ]"
+                                >
+                                  <fa-icon [icon]="faPaperclip"></fa-icon>
+                                </button>
+                                <button
+                                  [appHasPermission]="['SGC-Visualizar_Contrato']"
+                                  type="button"
+                                  class="btn bg-transparent text-secondary"
+                                  title="Visão Geral"
+                                  (click)="openVG(contrato)"
+                                  [routerLink]="[
+                                  '/home/visao-geral',
+                                  contrato.idContrato
+                                ]"
+                                >
+                                  <fa-icon [icon]="faFileLines"></fa-icon>
+                                </button>
+                                <button
+                                  [appHasPermission]="['SGC-Visualizar_Apostilamento']"
+                                  type="button"
+                                  class="btn bg-transparent text-secondary"
+                                  title="Apostilamento"
+                                  [disabled]="contrato.status === 'EM_ABERTO'"
+                                  (click)="openAP(contrato)"
+                                >
+                                  <strong>AP</strong>
+                                </button>
+                                <button
+                                  [appHasPermission]="['SGC-Visualizar_TermoAditivo']"
+                                  type="button"
+                                  class="btn bg-transparent text-secondary"
+                                  [disabled]="contrato.status === 'EM_ABERTO'"
+                                  title="Termo Aditivo"
+                                  (click)="openTA(contrato)"
+                                >
+                                  <strong>TA</strong>
+                                </button>
+                                <button
+                                  [appHasPermission]="['SGC-Editar_Contrato']"
+                                  type="button"
+                                  class="btn bg-transparent text-secondary"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-placement="top"
+                                  title="Editar"
+                                  data-bs-title="Editar"
+                                  [routerLink]="[
+                                    '/home/contrato/dados-basicos',
+                                    contrato.idContrato
+                                  ]"
+                                >
+                                  <fa-icon [icon]="faPenToSquare"></fa-icon>
+                                </button>
+                                <button
+                                  [appHasPermission]="['SGC-Visualizar_Contrato']"
+                                  type="button"
+                                  class="btn bg-transparent text-secondary"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-placement="top"
+                                  title="Visualizar"
+                                  data-bs-title="visualizar"
+                                  [routerLink]="[
+                                    '/home/contrato/finalizar-contrato',
+                                    contrato.idContrato
+                                  ]"
+                                >
+                                  <fa-icon [icon]="faEye"></fa-icon>
+                              </button>
+                          </app-actions>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                  <div
+                    class="text-center"
+                    style="position: sticky; left: 0; right: 0; z-index: 1"
+                  >
+                    <pagination-controls
+                      previousLabel=""
+                      (pageChange)="getList($event)"
+                      nextLabel=""
+                      nume
+                    ></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

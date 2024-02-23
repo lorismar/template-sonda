@@ -1,0 +1,79 @@
+<app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+<div class="modal-header border-bottom-0">
+  <h5 class="modal-title">Apostilamento - {{ query }}</h5>
+  <button type="button" class="btn-close" (click)="modal.close()"></button>
+</div>
+<div class="modal-body">
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Número Apostilamento</th>
+          <th>Número do Processo SEI</th>
+          <th>Data da Publicação</th>
+          <th>Data da Assinatura</th>
+          <th class="text-center">Status</th>
+          <th class="text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of apostilamentos">
+          <td>{{ item.numero }}</td>
+          <td>{{ item.numeroProcessoSei }}</td>
+          <td>{{ item.dataPublicacao  | date : "dd/MM/yyy" }}</td>
+          <td>{{ item.dataAssinatura  | date : "dd/MM/yyy" }}</td>
+          <td class="text-center pt-3">
+            <ng-container
+              *ngIf="item.status === 'EM_ABERTO'"
+            >
+              <fa-icon
+                [icon]="faCircleXmark"
+                class="fa-xl text-danger"
+              ></fa-icon>
+            </ng-container>
+            <ng-container
+              *ngIf="item.status === 'FINALIZADO'"
+            >
+              <fa-icon
+                [icon]="faCheckCircle"
+                class="fa-xl text-success"
+              ></fa-icon>
+            </ng-container>
+          </td>
+          <td class="text-end fixed-right-column">
+            <button
+              type="button"
+              class="btn bg-transparent text-secondary"
+              title="Editar"
+              (click)="modal.close()"
+              [appHasPermission]="['SGC-Editar_Apostilamento']"
+              [routerLink]="[
+                '/home/apostilamento',
+                item.idApostilamento
+              ]"
+            >
+            <fa-icon [icon]="faPenToSquare"></fa-icon>
+            </button>
+            <button
+              type="button"
+              class="btn bg-transparent text-secondary"
+              title="Excluir"
+              (click)="remover(item)"
+              [appHasPermission]="['SGC_ADMINISTRADOR']"
+            >
+              <fa-icon [icon]="faTrashCan"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-4 d-flex justify-content-end">
+      <button (click)="setAP()" class="btn btn-primary" [appHasPermission]="['SGC-Cadastrar_Apostilamento']">
+        Cadastrar Apostilamento <fa-icon class="ms-2" [icon]="faPlus"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal-footer border-top-0">
+<button type="button" class="btn btn-primary" (click)="modal.close()">Fechar</button>
+</div> -->

@@ -1,0 +1,89 @@
+<div class="dropdown">
+    <span
+      class="btn bg-transparent border-0 position-relative"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+      data-bs-auto-close="outside"
+    >
+      <fa-icon
+        title="Notificações"
+        [icon]="faBell"
+        class="fa-lg cursor-pointer position-relative"
+      >
+      </fa-icon>
+      <div
+        *ngIf="listaNotificacoes.length > 0"
+        class="position-absolute top-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle"
+      >
+        <span class="visually-hidden"></span>
+      </div>
+    </span>
+    <div class="dropdown-menu dropdown-menu-end toolbar-notificacoes shadow p-2">
+      <div class="d-flex justify-content-center align-items-center">
+        <strong>Central de Notificações</strong>
+        <span
+          class="badge rounded-pill bg-danger ms-1"
+          title="Total de notificações"
+          *ngIf="listaNotificacoes.length > 0"
+        >
+        </span>
+      </div>
+      <div class="d-flex justify-content-between mt-2">
+        <span
+          title="Clique para buscar novas notificações"
+          class="cursor-pointer small btn bg-transparent btn-sm text-secondary border-0"
+          (click)="getNotificacoes()"
+        >
+          <fa-icon [icon]="faRotate"></fa-icon>
+          Atualizar
+        </span>
+  
+        <span
+          (click)="limparTotas()"
+          *ngIf="listaNotificacoes.length > 0"
+          title="Clique para limpar todas a notificações"
+          class="text-muted btn bg-transparent btn-sm small border-0"
+          >Limpar Notificações</span
+        >
+      </div>
+  
+      <div
+        *ngIf="loading"
+        class="d-flex justify-content-center align-items-center small my-2"
+      >
+        Buscando...
+        <div class="spinner-grow spinner-grow-sm" role="status"></div>
+      </div>
+      <ul>
+        <li class="py-2 pe-1 small">
+          <div
+            *ngFor="let notificacao of listaNotificacoes"
+            class="alert alert-dismissible bg-light fade show shadow-sm border cursor-pointer"
+            role="alert"
+            (click)="navegar(notificacao.pedidoId)"
+          >
+            <div class="small cursor-pointer">
+              {{ notificacao.dataHora | date : "dd/MM/yyyy HH:mm" }}
+            </div>
+  
+            <div>
+              {{ notificacao.descricao }} - protocolo:
+              <b> {{ notificacao.pedidoId }}</b>
+            </div>
+            <button
+              [title]="'Excluir notificação'"
+              (click)="excluirNotificacao($event, notificacao.id)"
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        </li>
+        <li class="center-items" *ngIf="listaNotificacoes.length == 0">
+          Não há notificações novas
+        </li>
+      </ul>
+    </div>
+  </div>
+  

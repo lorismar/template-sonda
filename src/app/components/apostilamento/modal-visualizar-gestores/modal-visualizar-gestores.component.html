@@ -1,0 +1,27 @@
+<div class="modal-header border-bottom-0">
+    <h6 class="modal-title">Alteração de Gestores e Fiscais</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <h6>Atigos:</h6>
+        <ul style="padding: 0;">
+          <li *ngFor="let gestor of antigosGestores">
+            <b>{{ tipos[gestor.tipoGestor] }}: </b><s>{{ gestor.nome }}</s>
+          </li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h6>Novos:</h6>
+        <ul style="padding: 0;">
+          <li *ngFor="let gestor of novosGestores">
+            <b>{{ tipos[gestor.tipoGestor] }}: </b>{{ gestor.nome }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal-footer border-top-0">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Fechar</button>
+</div> -->

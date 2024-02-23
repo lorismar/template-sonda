@@ -1,0 +1,184 @@
+<div class="container">
+  <app-navegacao [paginaAnterior]="'Home'" [paginaAtual]="'Contrato'" [proximaPagina]="'Cadastro'"></app-navegacao>
+  <app-stepper></app-stepper>
+
+  <div [formGroup]="form">
+    <div class="card m-3 shadow p-2">
+      <div class="card-header bg-transparent text-secondary bg-white border-bottom-0">
+        <h6 class="card-title m-0 fw-bold">Cadastro de Gestores</h6>
+      </div>
+      <div class="row mt-1 card-body">
+        <div class="col-12 mb-3">
+          <label for="gestor" class="form-label">Área de Contratação <span class="text-danger">*</span></label>
+          <select 
+            class="form-select" 
+            name="indiceCorrecao" 
+            formControlName="areaContratacao"
+            (change)="form.get('areaContratacao')?.markAsTouched()"
+            [ngClass]="{
+              'is-invalid' : form.get('areaContratacao')?.invalid && form.get('areaContratacao')?.touched,
+              'is-valid' : form.get('areaContratacao')?.valid && form.get('areaContratacao')?.touched
+            }">
+            <option style="color: rgb(189, 19, 19);" [value]="null"> -- Selecione uma Área -- </option>
+            <option value="AQUISICAO">Aquisição</option>
+            <option value="CAPACITACAO">Capacitação</option>
+            <option value="OBRA_SERVICO_ENGENHARIA">Obras e Serviços de Engenharias</option>
+            <option value="SERVICO">Serviço</option>
+            <option value="TI">T.I</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="this.validaCampo == true">
+            <p>Campo obrigatório</p>
+          </div>
+        </div>
+
+        <div class="col-12 mb-3">
+          <label for="unidade" class="form-label">Unidade Solicitante/Demandante: <span class="text-danger">*</span></label>
+          <div class="position-relative">
+            <input 
+              class="form-control form-select" 
+              id="unidade" 
+              name="unidade" 
+              autocomplete="off"
+              formControlName="unidade"
+              placeholder="-- Selecione a Unidade --"
+              (keydown)="callBuscarUnidades($event)"
+              (click)="mostrarListaUnidades = !mostrarListaUnidades;"
+              (change)="form.get('unidade')?.markAsTouched()"
+              [ngClass]="{
+                'is-invalid' : form.get('unidade')?.invalid && form.get('unidade')?.touched,
+                'is-valid' : form.get('unidade')?.valid && form.get('unidade')?.touched
+              }"
+              />
+              <div class="spinner-border spinner-border-sm text-info" role="status" *ngIf="loading" style="position: absolute; right: 35px; top: 10px;">
+                <span class="sr-only">Loading...</span>
+              </div>
+            <div *ngIf="mostrarListaUnidades" class="autocomplete">
+              <div *ngFor="let unidade of unidades" (click)="selecionarUnidade(unidade)">
+                {{ unidade }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" formArrayName="gestores">
+          <label class="mb-2">Gestores e Fiscais <span class="text-danger">*</span></label>
+          <div
+            class="col-sm-12 col-md-6 col-lg-4"
+            *ngFor="let gestorForm of gestores.controls; let i = index"
+          >
+              <div class="card rounded shadow-sm mb-3" [formGroup]="getGestoresForm(i)">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label class="form-label">Função <span class="text-danger">*</span></label>
+                    <select
+                      class="form-select"
+                      name="tipoGestor"
+                      formControlName="tipoGestor"
+                      (change)="
+                        gestorForm.get('tipoGestor')?.markAsTouched()
+                      "
+                      [ngClass]="{
+                        'is-invalid':
+                          gestorForm.get('tipoGestor')?.invalid &&
+                          gestorForm.get('tipoGestor')?.touched,
+                        'is-valid':
+                          gestorForm.get('tipoGestor')?.valid &&
+                          gestorForm.get('tipoGestor')?.touched
+                      }">
+                      <option value="" class="text-center">
+                        -- Selecione --
+                      </option>
+                      <option value="GESTOR">Gestor</option>
+                      <option value="FISCAL_TECNICO">Fiscal Tecnico</option>
+                      <option value="FISCAL_ADMINISTRATIVO">Fiscal Administrativo</option>
+                      <option value="FISCAL_DEMANDANTE">Fiscal Demandante</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group mb-3">
+                    <label for="gestor" class="form-label">Nome <span class="text-danger">*</span></label>
+                    <div class="position-relative">
+                      <input 
+                        class="form-control" 
+                        id="gestor" 
+                        name="gestor"
+                        (keydown)="callBuscarGestores($event, i)" 
+                        (click)="mostrarLista[i] = !mostrarLista[i];"
+                        formControlName="nome"
+                        autocomplete="off" 
+                        placeholder="Pesquisar..."
+                        [ngClass]="{
+                          'is-invalid' : gestorForm.get('gestor')?.invalid && gestorForm.get('gestor')?.touched,
+                          'is-valid' : gestorForm.get('gestor')?.valid && gestorForm.get('gestor')?.touched
+                        }"/>
+                        <div class="spinner-border spinner-border-sm text-info" role="status" *ngIf="buscaGestor[i]" style="position: absolute; right: 10px; top: 10px;">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      <div *ngIf="mostrarLista[i] && listaGestores.length > 0" class="autocomplete">
+                        <div *ngFor="let gestor of listaGestores" (click)="selecionarGestor(gestor, gestorForm, i)">
+                          {{ gestor.nome }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group d-flex justify-content-end">
+                    <button
+                      class="btn btn-outline-danger"
+                      title="Remover Processo Administrativo"
+                      type="button"
+                      (click)="removerGestor(i)"
+                    >
+                      Remover
+                    </button>
+                  </div>
+
+                  <div *ngIf="gestorForm.value.gestor">
+                    <label>Nome: {{ gestorForm.value.gestor.nome }}</label><br>
+                    <label>CPF: {{ gestorForm.value.gestor.cpf }}</label><br>
+                    <label>Unidade de Locação: {{ gestorForm.value.gestor.unidadeLocacao ? gestorForm.value.gestor.unidadeLocacao : gestorForm.value.gestor.lotacao}}</label><br>
+                    <label>Cargo/Função: {{ gestorForm.value.gestor.funcao == null ?
+                      gestorForm.value.gestor.especialidade : gestorForm.value.gestor.funcao}}</label><br>
+                    <label>Comarca: {{ gestorForm.value.gestor.comarca }}</label>
+                  </div>
+                  <div *ngIf="!gestorForm.value.gestor && gestorForm.value.tipoGestor" class="h1 d-flex justify-content-center align-items-center" style="height: 100px;">
+                    <fa-icon *ngIf="gestorForm.value.tipoGestor === 'GESTOR'" [icon]="faUserShield" class="fa-lg text-secondary"></fa-icon>
+                    <fa-icon *ngIf="gestorForm.value.tipoGestor === 'FISCAL_TECNICO'" [icon]="faUserGear" class="fa-lg text-secondary"></fa-icon>
+                    <fa-icon *ngIf="gestorForm.value.tipoGestor === 'FISCAL_ADMINISTRATIVO'" [icon]="faUserTie" class="fa-lg text-secondary"></fa-icon>
+                    <fa-icon *ngIf="gestorForm.value.tipoGestor === 'FISCAL_DEMANDANTE'" [icon]="faUserClock" class="fa-lg text-secondary"></fa-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="col-2 d-flex flex-collum justify-content-center justify-content-lg-start align-items-center"
+            >
+            <div class="py-sm-3 p-3">
+              <button
+                type="button"
+                class="btn btn-primary"
+                title="Adicionar Processo Administrativo"
+                (click)="AddGestor()"
+              >
+                <strong>+</strong>
+              </button>
+            </div>
+          </div>
+          </div>
+
+        </div>
+    </div>
+    <div class="col-12 px-3">
+      <div class="h-100 d-flex align-items-center justify-content-end mb-3 mt-3">
+        <a [title]="'Voltar'" [routerLink]="'/home/contrato/datas-prazos/' + idContrato" class="btn btn-light border me-2">
+          Voltar
+        </a>
+        <button (click)="salvar()" [title]="'Salvar e Avançar'" class="btn btn-primary">
+          Salvar e Avançar
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-loading [loading]="loading" [borderRadius]="5"></app-loading>
+</div>

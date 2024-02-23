@@ -1,0 +1,274 @@
+<form [formGroup]="form">
+  <div class="modal-content">
+    <div class="modal-header border-bottom-0">
+      <h5 class="modal-title" id="exampleModalLabel">Cadastro Empenho</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.close()"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+        <div class="row mt-2">
+          <div class="container">
+            <div class="m-3">
+              <div class="card-body">
+                <div class="content">
+                  <div class="col-lg-12">
+                    <div class="row">
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Número do Empenho <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                          <span class="input-group-text">{{
+                            anoAtual + "NE"
+                          }}</span>
+                          <input
+                            formControlName="numeroEmpenho"
+                            class="form-control"
+                            name="numeroEmpenho"
+                            (keydown)="form.get('numeroEmpenho')?.markAsTouched()"
+                            [ngClass]="{
+                              'is-invalid':
+                                form.get('numeroEmpenho')?.invalid &&
+                                form.get('numeroEmpenho')?.touched,
+                              'is-valid':
+                                form.get('numeroEmpenho')?.valid &&
+                                form.get('numeroEmpenho')?.touched
+                            }"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Valor em R$ <span class="text-danger">*</span></label>
+                        <input
+                          currencyMask
+                          [options]="{
+                            prefix: 'R$ ',
+                            thousands: '.',
+                            decimal: ','
+                          }"
+                          formControlName="valor"
+                          class="form-control"
+                          name="valor"
+                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                          maxlength="19"
+                          (keydown)="form.get('valor')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('valor')?.invalid &&
+                              form.get('valor')?.touched,
+                            'is-valid':
+                              form.get('valor')?.valid &&
+                              form.get('valor')?.touched
+                          }"
+                        />
+                      </div>
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Modalidade Empenho <span class="text-danger">*</span></label>
+                        <select
+                          name="modalidade"
+                          formControlName="modalidade"
+                          class="form-select"
+                          aria-label=".form-select example"
+                          (change)="form.get('modalidade')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('modalidade')?.invalid &&
+                              form.get('modalidade')?.touched,
+                            'is-valid':
+                              form.get('modalidade')?.valid &&
+                              form.get('modalidade')?.touched
+                          }"
+                        >
+                          <option
+                            *ngFor="let empenho of empenhos"
+                            [value]="empenho"
+                          >
+                            {{ modalidadeEmpenhoLabel[empenho] }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Tipo Empenho <span class="text-danger">*</span></label>
+                        <select
+                          name="tipoEmpenho"
+                          formControlName="tipoEmpenho"
+                          class="form-select"
+                          aria-label=".form-select example"
+                          (change)="form.get('tipoEmpenho')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('tipoEmpenho')?.invalid &&
+                              form.get('tipoEmpenho')?.touched,
+                            'is-valid':
+                              form.get('tipoEmpenho')?.valid &&
+                              form.get('tipoEmpenho')?.touched
+                          }"
+                        >
+                          <option *ngFor="let tipo of tipos" [value]="tipo">
+                            {{ tipoEmpenhoEnumLabel[tipo] }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Fonte <span class="text-danger">*</span></label>
+                        <input
+                          formControlName="fonteRecurso"
+                          class="form-control"
+                          name="fonteRecurso"
+                          mask="0.000.0.00000"
+                          (keydown)="form.get('fonteRecurso')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('fonteRecurso')?.invalid &&
+                              form.get('fonteRecurso')?.touched,
+                            'is-valid':
+                              form.get('fonteRecurso')?.valid &&
+                              form.get('fonteRecurso')?.touched
+                          }"
+                        />
+                      </div>
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Funcional Programática <span class="text-danger">*</span></label>
+                        <input
+                          formControlName="funcionalProgramatica"
+                          class="form-control"
+                          name="funcionalProgramatica"
+                          mask="00.000.0000.0000"
+                          (keydown)="form.get('funcionalProgramatica')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('funcionalProgramatica')?.invalid &&
+                              form.get('funcionalProgramatica')?.touched,
+                            'is-valid':
+                              form.get('funcionalProgramatica')?.valid &&
+                              form.get('funcionalProgramatica')?.touched
+                          }"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>PA <span class="text-danger">*</span></label>
+                        <input
+                          onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 44 || event.charCode == 46"
+                          formControlName="pa"
+                          class="form-control"
+                          name="pa"
+                          mask="0000"
+                          (keydown)="form.get('pa')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('pa')?.invalid &&
+                              form.get('pa')?.touched,
+                            'is-valid':
+                              form.get('pa')?.valid &&
+                              form.get('pa')?.touched
+                          }"
+                        />
+                      </div>
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Elemento Despesa <span class="text-danger">*</span></label>
+                        <input
+                          formControlName="elementoDespesa"
+                          class="form-control"
+                          name="elementoDespesa"
+                          mask="00.00.00-00"
+                          (keydown)="form.get('elementoDespesa')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('elementoDespesa')?.invalid &&
+                              form.get('elementoDespesa')?.touched,
+                            'is-valid':
+                              form.get('elementoDespesa')?.valid &&
+                              form.get('elementoDespesa')?.touched
+                          }"
+                        />
+                      </div>
+                      <div class="col-lg-4 mb-2 d-flex flex-column justify-content-end">
+                        <label>Documento de Origem <span class="text-danger">*</span></label>
+                        <select
+                          formControlName="documentoOrigem"
+                          name="empenho.documentoOrigem"
+                          class="form-select"
+                          aria-label=".form-select example"
+                          (change)="form.get('documentoOrigem')?.markAsTouched()"
+                          [ngClass]="{
+                            'is-invalid':
+                              form.get('documentoOrigem')?.invalid &&
+                              form.get('documentoOrigem')?.touched,
+                            'is-valid':
+                              form.get('documentoOrigem')?.valid &&
+                              form.get('documentoOrigem')?.touched
+                          }"
+                        >
+                          <option
+                            *ngFor="let documento of documentos"
+                            [value]="documento"
+                          >
+                            {{ documentoEnumLabel[documento] }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- <div class="mb-3 py-2">
+                      <label
+                        for="exampleFormControlTextarea1"
+                        class="form-label"
+                        >Descrição Projeto</label
+                      >
+                      <textarea
+                        name="empenho.descricaoProjeto"
+                        formControlName="descricaoProjeto"
+                        class="form-control"
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        [maxlength]="'255'"
+                        #descricaoProjeto
+                      ></textarea>
+                      <mat-hint
+                        >{{ descricaoProjeto.value.length }} / 255</mat-hint
+                      >
+                    </div> -->
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end mt-4">
+                  <div>
+                    <button
+                      (click)="modal.close()"
+                      type="button"
+                      class="btn btn-light border"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger border ms-2"
+                      title="Limpar Campos"
+                      (click)="limparCampos()"
+                    >
+                      Limpar Campos
+                    </button>
+                    <button
+                      [disabled]="!this.form.valid"
+                      class="btn btn-primary ms-2"
+                      (click)="salvarEmpenho()"
+                      title="Salvar"
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
